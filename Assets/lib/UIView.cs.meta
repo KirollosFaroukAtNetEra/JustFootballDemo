@@ -1,0 +1,29 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public abstract class UIView : MonoBehaviour
+{
+
+}
+public abstract class UIVIew<M, C> : UIView
+    where M : UIModel
+    where C : UIController<M>, new()
+{
+    public M Model;
+    protected C Controller;
+
+    public virtual void Awake() {
+        Controller = new C();
+        Controller.Setup(Model);
+        SetupView();
+    }
+    public virtual void SetupView()
+    {
+    }
+    public static void OpenView()
+    {
+
+    }
+}
