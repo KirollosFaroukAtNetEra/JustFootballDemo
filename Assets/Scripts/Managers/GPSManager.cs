@@ -17,9 +17,10 @@ public class GPSManager : BaseManager<GPSManager>
 
     public override void Initialize()
     {
-        StartCoroutine(InitalizeGpsService());
+        StartCoroutine( InitalizeGpsService() );
         IsReady = true;
     }
+
     private IEnumerator InitalizeGpsService()
     {
         if( !Input.location.isEnabledByUser )
@@ -30,22 +31,22 @@ public class GPSManager : BaseManager<GPSManager>
         Input.location.Start();
 
         int maxWait = 20;
-        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+        while( Input.location.status == LocationServiceStatus.Initializing && maxWait > 0 )
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds( 1 );
             maxWait--;
         }
 
-        if (maxWait < 1)
+        if( maxWait < 1 )
         {
-            print("Timed out");
+            print( "Timed out" );
             _state = LocationState.TimedOut;
             yield break;
         }
 
-        if (Input.location.status == LocationServiceStatus.Failed)
+        if( Input.location.status == LocationServiceStatus.Failed )
         {
-            print("Unable to determine device location");
+            print( "Unable to determine device location" );
             _state = LocationState.Failed;
         }
         else
@@ -57,7 +58,7 @@ public class GPSManager : BaseManager<GPSManager>
 
 
     //get delta movement
-    private static float Haversine(float lastLatitude, float lastLongitude)
+    private static float Haversine( float lastLatitude, float lastLongitude )
     {
         var newLatitude = Input.location.lastData.latitude;
         var newLongitude = Input.location.lastData.longitude;
@@ -78,7 +79,7 @@ public class GPSManager : BaseManager<GPSManager>
             return;
         }
 
-        var deltaDistance = Haversine(LastData.latitude, LastData.longitude) * 1000f;
+        var deltaDistance = Haversine( LastData.latitude, LastData.longitude ) * 1000f;
 
         if( !( deltaDistance > 0f ) )
         {
@@ -93,6 +94,6 @@ public class GPSManager : BaseManager<GPSManager>
             lng = LastData.longitude
         };
 
-        ApiManager.Instance.SendGpsData(newLocation);
+        ApiManager.Instance.SendGpsData( newLocation );
     }
 }

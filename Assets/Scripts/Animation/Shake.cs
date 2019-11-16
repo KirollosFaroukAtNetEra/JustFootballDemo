@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Shake : AnimationBehaviour
 {
@@ -16,18 +14,22 @@ public class Shake : AnimationBehaviour
     {
         originPosition = transform.localPosition;
     }
+
     public override void StopAnimate()
     {
         isShaking = false;
         base.StopAnimate();
     }
+
     void Update()
     {
-        if (isShaking)
+        if( isShaking )
         {
             shake_speed = shake_speed + amountOverTime;
             float step = shake_speed * Time.deltaTime;
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, originPosition + Random.insideUnitSphere * shake_intensity, step);
+            transform.localPosition = Vector3.MoveTowards( transform.localPosition,
+                originPosition + Random.insideUnitSphere * shake_intensity,
+                step );
 
         }
     }

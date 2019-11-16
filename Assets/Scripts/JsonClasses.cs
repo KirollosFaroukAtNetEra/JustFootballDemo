@@ -80,3 +80,9 @@ public class ClubData
     public string name;
     public string league;
 }
+
+[Serializable]
+public class ErrorJson
+{
+    public string success;
+}

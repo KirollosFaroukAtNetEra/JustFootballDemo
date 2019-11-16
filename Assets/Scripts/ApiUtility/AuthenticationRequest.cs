@@ -5,20 +5,17 @@ using UnityEngine.Networking;
 
 public class AuthenticationRequest : RequestBase
 {
-    private readonly string _deviceID = SystemInfo.deviceUniqueIdentifier;
-
-    private Token _authToken;
-    private Action<bool, string> callBack;
-
     private const string RequestUrl = ApiUrl + "/auth/token";
+    private string _deviceID = SystemInfo.deviceUniqueIdentifier;
 
-    public AuthenticationRequest(bool isNewUser, Action<bool, string> callBack)
+    private Token _authToken => new Token( _deviceID );
+
+    public bool IsNewUser
     {
-        _deviceID = isNewUser ? Guid.NewGuid().ToString() : _deviceID;
-        _authToken = new Token( _deviceID );
-
-        this.callBack = callBack;
+        set => _deviceID = value ? Guid.NewGuid().ToString() : _deviceID;
     }
+
+    public Action<bool, string> SuccessCallBack;
 
     public override UnityWebRequest GetRequest()
     {
@@ -38,6 +35,6 @@ public class AuthenticationRequest : RequestBase
     public override void HandleResponse(UnityWebRequest response)
     {
         base.HandleResponse( response );
-        callBack?.Invoke( response.responseCode == 200L, response.downloadHandler.text );
+        SuccessCallBack?.Invoke( response.responseCode == 200L, response.downloadHandler.text );
     }
 }

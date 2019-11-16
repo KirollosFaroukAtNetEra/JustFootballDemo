@@ -9,9 +9,11 @@ public class CardItem : PooledElement<CardData>
     public Image clubIcon;
     public Text playerName;
     public UIButton CardButton;
+
     [SerializeField]
     private CardData _data;
-    public override CardData Data {
+    public override CardData Data
+    {
         get => _data;
         set
         {
@@ -19,16 +21,27 @@ public class CardItem : PooledElement<CardData>
             SetupView( value );
         }
     }
-    public override void UpdateData()
-    {
-        Debug.Log( "Updateing Cards" );
-    }
 
-    public void SetupView( CardData data)
+    public void SetupView( CardData data )
     {
         playerName.text = data.username;
-        DataManager.Instance.GetSpriteByUrl(data.pictureUrl,(image) =>{
-            if (playerImage == null) return; playerImage.sprite = image;} );
-        DataManager.Instance.GetSpriteByUrl(data.clubPictureUrl, (image) => { if (clubIcon == null) return;  clubIcon.sprite = image; });
+        DataManager.Instance.GetSpriteByUrl( data.pictureUrl,
+            ( image ) =>
+            {
+                if( playerImage == null )
+                    return;
+                playerImage.sprite = image;
+            } );
+        DataManager.Instance.GetSpriteByUrl( data.clubPictureUrl,
+            ( image ) =>
+            {
+                if( clubIcon == null )
+                    return;
+                clubIcon.sprite = image;
+            } );
+    }
+
+    public override void UpdateData()
+    {
     }
 }

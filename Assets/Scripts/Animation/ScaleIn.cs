@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScaleIn : AnimationBehaviour
 {
@@ -17,7 +15,7 @@ public class ScaleIn : AnimationBehaviour
 
     void OnEnable()
     {
-        transform.localScale=new Vector3(0.5f,0.5f,0.5f);
+        transform.localScale = new Vector3( 0.5f, 0.5f, 0.5f );
         baseScale = transform.localScale;
         transform.localScale = baseScale * startSize;
         currScale = startSize;
@@ -26,18 +24,17 @@ public class ScaleIn : AnimationBehaviour
 
     void Update()
     {
-        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, speed * Time.deltaTime);
+        transform.localScale = Vector3.Lerp( transform.localScale, targetScale, speed * Time.deltaTime );
     }
 
-    public void ChangeSize(bool bigger)
+    public void ChangeSize( bool bigger )
     {
-
-        if (bigger)
+        if( bigger )
             currScale++;
         else
             currScale--;
 
-        currScale = Mathf.Clamp(currScale, minSize, maxSize + 1);
+        currScale = Mathf.Clamp( currScale, minSize, maxSize + 1 );
 
         targetScale = baseScale * currScale;
     }

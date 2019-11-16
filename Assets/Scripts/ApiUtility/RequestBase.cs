@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using System;
 using UnityEngine.Networking;
 
 public enum HTTPReqType
@@ -15,6 +15,8 @@ public abstract class RequestBase
     protected virtual string RequestUrl { get; }
     protected string Body;
 
+    public Action FailCallBack;
+
     public virtual UnityWebRequest GetRequest()
     {
         var request = new UnityWebRequest( RequestUrl, RequestType.ToString() );
@@ -24,12 +26,16 @@ public abstract class RequestBase
         return request;
     }
 
-    public virtual void HandleResponse(UnityWebRequest response)
+    public virtual void HandleResponse( UnityWebRequest response )
     {
-        if (response.isHttpError || response.isNetworkError)
+        var responseText = response.downloadHandler.text;
+        if ( response.isHttpError ||
+            response.isNetworkError || (responseText.Contains("success") 
+                && responseText.CreateFromJson<ErrorJson>().success.ToLower() == "false" ))
         {
-            ViewsManager.Instance.ShowAlert("Network Error");
-            Debug.LogError("Net Error");
+            ViewsManager.Instance.ShowAlert( "Network Error" );
+            ApiManager.Instance.Requests.Enqueue( this );
+            FailCallBack?.Invoke();
         }
     }
 }

@@ -27,9 +27,9 @@ public class DataManager : BaseManager<DataManager>
         if( req.isNetworkError ||
             req.isHttpError )
         {
-            Debug.Log( req.error );
-
-            callback.Invoke( null );
+            callback.Invoke( Sprite.Create( Texture2D.blackTexture,
+                new Rect( 0, 0, 100, 100 ),
+                new Vector2( 0.5f, 0.5f ) ) );
             yield break;
         }
 

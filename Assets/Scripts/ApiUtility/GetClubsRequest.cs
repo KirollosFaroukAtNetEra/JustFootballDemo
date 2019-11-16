@@ -18,7 +18,7 @@ public class GetClubsRequest : RequestBase
 
     public string ClubId;
 
-    public Action<ClubData[]> callBack;
+    public Action<ClubData[]> SuccessCallBack;
 
     public override UnityWebRequest GetRequest()
     {
@@ -29,6 +29,6 @@ public class GetClubsRequest : RequestBase
     public override void HandleResponse( UnityWebRequest response )
     {
         base.HandleResponse( response );
-        callBack?.Invoke( response.downloadHandler.text.CreateArrayFromJson<ClubData>() );
+        SuccessCallBack?.Invoke( response.downloadHandler.text.CreateArrayFromJson<ClubData>() );
     }
 }

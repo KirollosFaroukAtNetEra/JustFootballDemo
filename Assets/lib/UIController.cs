@@ -11,9 +11,9 @@ public abstract class UIController<M> where M : UIModel
         Model = model;
         Model.NotifyOnPropertyChanged();
     }
-    public virtual void RetryLoadData()
-    {
-    }
+    //public virtual void RetryLoadData()
+    //{
+    //}
     protected virtual void Close()
     {
 

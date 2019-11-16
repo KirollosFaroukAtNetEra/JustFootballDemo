@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public enum AnimationType
 {
@@ -14,56 +12,60 @@ public enum AnimationType
     Transition,
     None
 }
+
 public class AnimationManager : BaseManager<AnimationManager>
 {
-    private Dictionary<GameObject, List<AnimationHandler>> AnimationList = new Dictionary<GameObject, List<AnimationHandler>>();
+    private Dictionary<GameObject, List<AnimationHandler>> AnimationList =
+        new Dictionary<GameObject, List<AnimationHandler>>();
     public Animator transitionAnimator;
     public Animator SplashAnimationGO;
-
-
 
     public override void Initialize()
     {
         IsReady = true;
     }
 
-    public void AddAnimation(AnimationType animationType,GameObject refrenceGameObject,bool resetToOriginal = true)
+    public void AddAnimation( AnimationType animationType, GameObject refrenceGameObject, bool resetToOriginal = true )
     {
-        if (!AnimationList.ContainsKey(refrenceGameObject))
-            AnimationList.Add(refrenceGameObject, new List<AnimationHandler>());
+        if( !AnimationList.ContainsKey( refrenceGameObject ) )
+            AnimationList.Add( refrenceGameObject, new List<AnimationHandler>() );
 
-        var existsAnimationHandler = AnimationList[refrenceGameObject].Find(x => x.AnimationType == animationType);
-        if (existsAnimationHandler != null)
+        var existsAnimationHandler = AnimationList[ refrenceGameObject ].Find( x => x.AnimationType == animationType );
+        if( existsAnimationHandler != null )
             return;
         AnimationHandler animationHandler = new AnimationHandler();
         animationHandler.AnimationType = animationType;
         animationHandler.RefrenceObject = refrenceGameObject;
         animationHandler.resetToOriginal = resetToOriginal;
-        AnimationList[refrenceGameObject].Add(animationHandler);
+        AnimationList[ refrenceGameObject ].Add( animationHandler );
         animationHandler.Start();
-        
+
     }
 
-    public void StopAnimation( GameObject refrenceGameObject, AnimationType animationType)
+    public void StopAnimation( GameObject refrenceGameObject, AnimationType animationType )
     {
-        if (!AnimationList.ContainsKey(refrenceGameObject))
+        if( !AnimationList.ContainsKey( refrenceGameObject ) )
             return;
-        var animationHandlerIndex = AnimationList[refrenceGameObject].FindIndex(x => x.AnimationType == animationType);
-        if(animationHandlerIndex == -1)
+        var animationHandlerIndex =
+            AnimationList[ refrenceGameObject ].FindIndex( x => x.AnimationType == animationType );
+        if( animationHandlerIndex == -1 )
             return;
-        AnimationList[refrenceGameObject][animationHandlerIndex].Stop();
-        AnimationList[refrenceGameObject].RemoveAt(animationHandlerIndex);
+        AnimationList[ refrenceGameObject ][ animationHandlerIndex ].Stop();
+        AnimationList[ refrenceGameObject ].RemoveAt( animationHandlerIndex );
     }
-    public void TransitionAnimation(bool start)
+
+    public void TransitionAnimation( bool start )
     {
-        transitionAnimator.SetBool("IsOpen", start);
+        transitionAnimator.SetBool( "IsOpen", start );
     }
+
     public void SplashAnimation()
     {
-        SplashAnimationGO.SetBool("IsOpen", true);
+        SplashAnimationGO.SetBool( "IsOpen", true );
     }
+
     public void StopSplashAnimation()
     {
-       SplashAnimationGO.gameObject.SetActive( false );
+        SplashAnimationGO.gameObject.SetActive( false );
     }
 }

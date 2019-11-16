@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class ProfileController : UIController<ProfileModel>
+﻿public class ProfileController : UIController<ProfileModel>
 {
     private string playerID;
     public override void Setup(ProfileModel model,object dataObject)
@@ -21,12 +19,7 @@ public class ProfileController : UIController<ProfileModel>
         ApiManager.Instance.PostUserNameRequest( new UserName( newUserName ),
             () =>
             {
-                Debug.Log( "Update Name Complete" );
                 Events.instance.Raise(new ProfileNameUpdated(newUserName) );
             } );
-    }
-    public override void RetryLoadData()
-    {
-        Model.RequestProfileData(playerID);
     }
 }

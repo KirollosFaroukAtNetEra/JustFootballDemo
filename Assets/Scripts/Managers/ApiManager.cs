@@ -1,27 +1,48 @@
 ﻿using System;
 using System.Collections;
-using System.Text;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class ApiManager : BaseManager<ApiManager>
 {
     public static string _authToken;
 
     public bool IsNewUser = true;
-
     public bool IsConnected;
+
+    private readonly float _resyncTime = 10f;
+
+    public Queue<RequestBase> Requests = new Queue<RequestBase>();
 
     public override void Initialize()
     {
-        StartCoroutine( SendRequest( new AuthenticationRequest( IsNewUser,
-            ( b, s ) =>
+        StartCoroutine( SendRequest( new AuthenticationRequest()
+        {
+            IsNewUser = true,
+            SuccessCallBack = ( b, s ) =>
             {
                 IsConnected = b;
                 _authToken = s;
-            } ) ) );
+            }
+        } ) );
+
+        StartCoroutine( CheckQueue() );
 
         IsReady = true;
+    }
+
+    private IEnumerator CheckQueue()
+    {
+        while( true )
+        {
+            yield return new WaitForSeconds( _resyncTime );
+
+            while( Requests.Count > 0 )
+            {
+                var failedReq = Requests.Dequeue();
+                StartCoroutine( SendRequest( failedReq ) );
+            }
+        }
     }
 
     public void GetUserRequest( string playerName = "", Action<UserData> onComplete = null )
@@ -29,7 +50,7 @@ public class ApiManager : BaseManager<ApiManager>
         StartCoroutine( SendRequest( new GetUserRequest()
         {
             UserId = playerName,
-            callBack = onComplete
+            SuccessCallBack = onComplete
         } ) );
     }
 
@@ -37,8 +58,8 @@ public class ApiManager : BaseManager<ApiManager>
     {
         StartCoroutine( SendRequest( new UpdateUsernameRequest()
         {
-            NewUsername =  userName,
-            callBack = onComplete
+            NewUsername = userName,
+            SuccessCallBack = onComplete
         } ) );
     }
 
@@ -47,7 +68,7 @@ public class ApiManager : BaseManager<ApiManager>
         StartCoroutine( SendRequest( new UpdateClubRequest()
         {
             NewClub = club,
-            callBack = onComplete
+            SuccessCallBack = onComplete
         } ) );
     }
 
@@ -56,7 +77,7 @@ public class ApiManager : BaseManager<ApiManager>
         StartCoroutine( SendRequest( new GetClubsRequest()
         {
             ClubId = clubId,
-            callBack = onComplete
+            SuccessCallBack = onComplete
         } ) );
     }
 
@@ -64,7 +85,7 @@ public class ApiManager : BaseManager<ApiManager>
     {
         StartCoroutine( SendRequest( new GetCardsRequest()
         {
-            callBack = onComplete
+            SuccessCallBack = onComplete
         } ) );
     }
 
@@ -73,16 +94,16 @@ public class ApiManager : BaseManager<ApiManager>
         StartCoroutine( SendRequest( new UpdateUserLocationRequest()
         {
             NewLocation = locInfo,
-            callBack = onComplete
+            SuccessCallBack = onComplete
         } ) );
     }
 
-    private IEnumerator SendRequest<T>(T req) where T : RequestBase
+    private IEnumerator SendRequest<T>( T request ) where T : RequestBase
     {
-        var _request = req.GetRequest();
+        var webRequest = request.GetRequest();
 
-        yield return _request.SendWebRequest();
+        yield return webRequest.SendWebRequest();
 
-        req.HandleResponse( _request );
+        request.HandleResponse( webRequest );
     }
 }

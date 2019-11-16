@@ -18,11 +18,11 @@ public class GetUserRequest : RequestBase
 
     public string UserId;
 
-    public Action<UserData> callBack;
+    public Action<UserData> SuccessCallBack;
 
     public override void HandleResponse( UnityWebRequest response )
     {
         base.HandleResponse( response );
-        callBack?.Invoke( response.downloadHandler.text.CreateFromJson<UserData>() );
+        SuccessCallBack?.Invoke( response.downloadHandler.text.CreateFromJson<UserData>() );
     }
 }

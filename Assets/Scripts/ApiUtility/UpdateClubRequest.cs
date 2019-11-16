@@ -7,7 +7,7 @@ public class UpdateClubRequest : RequestBase
 
     public Club NewClub;
 
-    public Action callBack;
+    public Action SuccessCallBack;
 
     public override UnityWebRequest GetRequest()
     {
@@ -19,6 +19,6 @@ public class UpdateClubRequest : RequestBase
     public override void HandleResponse( UnityWebRequest response )
     {
         base.HandleResponse( response );
-        callBack?.Invoke();
+        SuccessCallBack?.Invoke();
     }
 }

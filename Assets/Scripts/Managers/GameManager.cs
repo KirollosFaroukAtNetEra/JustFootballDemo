@@ -9,37 +9,39 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public GameObject animationManager;
     [SerializeField]
     Queue<Command> commands = new Queue<Command>();
+
     public override void Awake()
     {
         base.Awake();
-        Command animationManagerCommand = new LoadManagerCommand(this, new List<GameObject> { animationManager });
-        commands.Enqueue(animationManagerCommand);
-        Command spalshAnimation = new TransitionAnimationCommand(this,AnimationType.SplashScene, false);
-        commands.Enqueue(spalshAnimation);
-        Command transitionAnimation = new TransitionAnimationCommand(this, AnimationType.Transition, true);
-        commands.Enqueue(transitionAnimation);
-        Command managersCommand = new LoadManagerCommand(this, ManagersInGame);
-        commands.Enqueue(managersCommand);
-        Command loadSceneCommand = new LoadSceneCOmmand(this, ScenesType.MainScene);
-        commands.Enqueue(loadSceneCommand);
-        Command loadMainViewCommand = new LoadViewCommand(this, ViewType.HomeView);
-        commands.Enqueue(loadMainViewCommand);
-        Command transitionAnimationClose = new TransitionAnimationCommand(this, AnimationType.Transition, false);
-        commands.Enqueue(transitionAnimationClose);
+        Command animationManagerCommand = new LoadManagerCommand( this, new List<GameObject> { animationManager } );
+        commands.Enqueue( animationManagerCommand );
+        Command splashAnimation = new TransitionAnimationCommand( this, AnimationType.SplashScene, false );
+        commands.Enqueue( splashAnimation );
+        Command transitionAnimation = new TransitionAnimationCommand( this, AnimationType.Transition, true );
+        commands.Enqueue( transitionAnimation );
+        Command managersCommand = new LoadManagerCommand( this, ManagersInGame );
+        commands.Enqueue( managersCommand );
+        Command loadSceneCommand = new LoadSceneCOmmand( this, ScenesType.MainScene );
+        commands.Enqueue( loadSceneCommand );
+        Command loadMainViewCommand = new LoadViewCommand( this, ViewType.HomeView );
+        commands.Enqueue( loadMainViewCommand );
+        Command transitionAnimationClose = new TransitionAnimationCommand( this, AnimationType.Transition, false );
+        commands.Enqueue( transitionAnimationClose );
         StartLoadGame();
     }
 
     public void StartLoadGame()
     {
-        StartCoroutine(InitAllManagers());
+        StartCoroutine( InitAllManagers() );
     }
+
     IEnumerator InitAllManagers()
     {
-        while (commands.Count > 0)
+        while( commands.Count > 0 )
         {
-            Command commandToExecute =  commands.Dequeue();
+            Command commandToExecute = commands.Dequeue();
             commandToExecute.Execute();
-            yield return new WaitUntil(() => commandToExecute.IsFinished);
+            yield return new WaitUntil( () => commandToExecute.IsFinished );
         }
     }
 }

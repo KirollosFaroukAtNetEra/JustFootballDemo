@@ -5,11 +5,11 @@ public class GetCardsRequest : RequestBase
 {
     protected override string RequestUrl => ApiUrl + "/cards";
 
-    public Action<CardData[]> callBack;
+    public Action<CardData[]> SuccessCallBack;
 
     public override void HandleResponse(UnityWebRequest response)
     {
         base.HandleResponse(response);
-        callBack?.Invoke( response.downloadHandler.text.CreateArrayFromJson<CardData>() );
+        SuccessCallBack?.Invoke( response.downloadHandler.text.CreateArrayFromJson<CardData>() );
     }
 }
