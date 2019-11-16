@@ -12,7 +12,7 @@ public class ProfileModel : UIModel
         set
         {
             _playerData = value;
-            NotifyOnPropertyChanged("PlayerData");
+            NotifyOnPropertyChanged(DataLoadedObserverName);
         }
         get => _playerData;
     }

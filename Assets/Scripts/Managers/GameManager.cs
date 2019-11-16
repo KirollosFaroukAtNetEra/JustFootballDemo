@@ -7,23 +7,24 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     [SerializeField]
     List<GameObject> ManagersInGame = new List<GameObject>();
     public GameObject animationManager;
+    [SerializeField]
     Queue<Command> commands = new Queue<Command>();
     public override void Awake()
     {
         base.Awake();
         Command animationManagerCommand = new LoadManagerCommand(this, new List<GameObject> { animationManager });
-        Command spalshAnimation = new TransitionAnimationCommand(this,AnimationType.SplashScene, false);
-        Command transitionAnimation = new TransitionAnimationCommand(this, AnimationType.Transition, true);
-        Command managersCommand = new LoadManagerCommand(this, ManagersInGame);
-        Command loadSceneCommand = new LoadSceneCOmmand(this, ScenesType.MainScene);
-        Command loadMainViewCommand = new LoadViewCommand(this, ViewType.HomeView);
-        Command transitionAnimationClose = new TransitionAnimationCommand(this, AnimationType.Transition, false);
         commands.Enqueue(animationManagerCommand);
+        Command spalshAnimation = new TransitionAnimationCommand(this,AnimationType.SplashScene, false);
         commands.Enqueue(spalshAnimation);
+        Command transitionAnimation = new TransitionAnimationCommand(this, AnimationType.Transition, true);
         commands.Enqueue(transitionAnimation);
+        Command managersCommand = new LoadManagerCommand(this, ManagersInGame);
         commands.Enqueue(managersCommand);
+        Command loadSceneCommand = new LoadSceneCOmmand(this, ScenesType.MainScene);
         commands.Enqueue(loadSceneCommand);
+        Command loadMainViewCommand = new LoadViewCommand(this, ViewType.HomeView);
         commands.Enqueue(loadMainViewCommand);
+        Command transitionAnimationClose = new TransitionAnimationCommand(this, AnimationType.Transition, false);
         commands.Enqueue(transitionAnimationClose);
         StartLoadGame();
     }

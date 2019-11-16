@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ViewsManager : BaseManager<ViewsManager>
 {
-    private List<UIView> _viewsStack;
+    private List<UIViewBase> _viewsStack;
     public List<ViewData> ViewsObjectsList;
     Command TransitionViewsAnimationIn;
     Command TransitionViewsAnimationOut;
@@ -15,7 +15,7 @@ public class ViewsManager : BaseManager<ViewsManager>
 
     public override void Initialize()
     {
-        _viewsStack = new List<UIView>();
+        _viewsStack = new List<UIViewBase>();
         TransitionViewsAnimationIn = new TransitionAnimationCommand(this, AnimationType.Transition, true);
         TransitionViewsAnimationOut = new TransitionAnimationCommand(this, AnimationType.Transition, false);
         IsReady = true;
@@ -58,10 +58,10 @@ public class ViewsManager : BaseManager<ViewsManager>
         yield return new WaitUntil(() => TransitionViewsAnimationIn.IsFinished);
         DisableOnTopOfStack();
         var viewobject = Instantiate(ViewsObjectsList.FirstOrDefault(view => view.Type == viewType).ViewObject);
-        var viewToOpen = viewobject.GetComponent<UIView>();
+        var viewToOpen = viewobject.GetComponent<UIViewBase>();
         viewToOpen.SetupView(dataObject);
         _viewsStack.Add(viewToOpen);
-        yield return new WaitUntil(() => viewToOpen.isLoaded);
+        yield return new WaitUntil(() => viewToOpen.isViewLoaded);
         if (OnComplete != null)
         {
             OnComplete.Invoke();
