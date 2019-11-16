@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1062140437322405860}
   - component: {fileID: 8959107148432018996}
   - component: {fileID: 8758474547676427790}
+  - component: {fileID: 4359291513496700113}
   m_Layer: 5
   m_Name: CardItem
   m_TagString: Untagged
@@ -152,6 +153,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &4359291513496700113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062140437322405864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.7882353}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1062140437352685073
 GameObject:
   m_ObjectHideFlags: 0
