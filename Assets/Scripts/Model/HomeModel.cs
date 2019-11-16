@@ -16,7 +16,7 @@ public class HomeModel : UIModel
     private void OnProfileNameUpdated(ProfileNameUpdated e)
     {
         playerData.username = e.ProfileName;
-        NotifyOnPropertyChanged("PlayerData");
+        NotifyOnPropertyChanged(DataLoadedObserverName);
     }
 
     public void RequestProfileData()
@@ -27,7 +27,7 @@ public class HomeModel : UIModel
     {
         DataManager.Instance.MyData = userData;
         playerData = userData;
-        NotifyOnPropertyChanged("PlayerData");
+        NotifyOnPropertyChanged(DataLoadedObserverName);
     }
 
     ~HomeModel()

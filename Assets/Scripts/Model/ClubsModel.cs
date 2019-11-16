@@ -17,6 +17,6 @@ public class ClubsModel : UIModel
     private void OnGetClubsComplete(ClubsData.ClubData[] clubsData)
     {
         ClubsList = clubsData;
-        NotifyOnPropertyChanged("ClubsList");
+        NotifyOnPropertyChanged(DataLoadedObserverName);
     }
 }
