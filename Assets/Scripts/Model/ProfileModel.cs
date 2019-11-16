@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts;
-using UnityEngine;
-
-[System.Serializable]
+﻿[System.Serializable]
 public class ProfileModel : UIModel
 {
     private UserData _playerData;
@@ -22,7 +17,7 @@ public class ProfileModel : UIModel
     public void RequestProfileData(string userId="")
     {
         IsMyProfile = userId == string.Empty;
-        ApiManager.Instance.GetUserRequest(new UserName( userId ), OnGetUserData);
+        ApiManager.Instance.GetUserRequest( userId, OnGetUserData );
     }
     private void OnGetUserData(UserData userData)
     {

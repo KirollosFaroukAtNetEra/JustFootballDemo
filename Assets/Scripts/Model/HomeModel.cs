@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts;
-using UnityEngine;
-
-[System.Serializable]
+﻿[System.Serializable]
 public class HomeModel : UIModel
 {
     public UserData playerData;

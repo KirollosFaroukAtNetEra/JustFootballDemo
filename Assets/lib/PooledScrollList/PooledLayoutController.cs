@@ -113,7 +113,7 @@ namespace Assets.Scripts.PooledScrollList
         {
             for( int i = 0; i < ActiveElements.Count; i++ )
             {
-                ActiveElements[i].Updatedata();
+                ActiveElements[i].UpdateData();
             }
         }
     }

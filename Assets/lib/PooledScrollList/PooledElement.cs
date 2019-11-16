@@ -22,6 +22,6 @@ namespace Assets.Scripts.PooledScrollList
 
         public abstract T Data { get; set; }
 
-        public abstract void Updatedata();
+        public abstract void UpdateData();
     }
 }

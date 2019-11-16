@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts;
-using Assets.Scripts.PooledScrollList;
+﻿using Assets.Scripts.PooledScrollList;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardItem : PooledElement<CardsData.CardData>
+public class CardItem : PooledElement<CardData>
 {
     public Image backGround;
     public Image playerImage;
@@ -13,8 +10,8 @@ public class CardItem : PooledElement<CardsData.CardData>
     public Text playerName;
     public UIButton CardButton;
     [SerializeField]
-    private CardsData.CardData _data;
-    public override CardsData.CardData Data {
+    private CardData _data;
+    public override CardData Data {
         get => _data;
         set
         {
@@ -22,12 +19,12 @@ public class CardItem : PooledElement<CardsData.CardData>
             SetupView( value );
         }
     }
-    public override void Updatedata()
+    public override void UpdateData()
     {
         Debug.Log( "Updateing Cards" );
     }
 
-    public void SetupView( CardsData.CardData data)
+    public void SetupView( CardData data)
     {
         playerName.text = data.username;
         DataManager.Instance.GetSpriteByUrl(data.pictureUrl,(image) =>{

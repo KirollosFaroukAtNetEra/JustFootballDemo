@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using Assets.Scripts;
 
 public class DataManager : BaseManager<DataManager>
 {
@@ -13,11 +11,6 @@ public class DataManager : BaseManager<DataManager>
     {
         base.Initialize();
         IsReady = true;
-    }
-
-    public void DownloadSprites( ClubsData clubObject )
-    {
-        clubObject.clubsSprites = new Dictionary<string, Texture2D>();
     }
 
     public void GetSpriteByUrl( string spriteUrl, Action<Sprite> callback )
@@ -34,7 +27,7 @@ public class DataManager : BaseManager<DataManager>
         if( req.isNetworkError ||
             req.isHttpError )
         {
-            Debug.Log( req.error?? "" );
+            Debug.Log( req.error );
 
             callback.Invoke( null );
             yield break;

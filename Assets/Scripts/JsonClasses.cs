@@ -1,110 +1,82 @@
 ﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
 
-namespace Assets.Scripts
+[Serializable]
+public class Token
 {
-    public abstract class JsonClass<T>
+    public string clientToken;
+
+    public Token(string uniqueId)
     {
-        public static string ToJson( JsonClass<T> obj )
-        {
-            return JsonUtility.ToJson( obj );
-        }
-
-        public static T CreateFromJson( string jsonString )
-        {
-            return JsonUtility.FromJson<T>( jsonString );
-        }
+        clientToken = uniqueId;
     }
+}
 
-    public class Token : JsonClass<Token>
+[Serializable]
+public class UserName
+{
+    public string username;
+
+    public UserName(string name)
     {
-        // This will be User id
-        public string clientToken;
-
-        public Token( string uniqueId )
-        {
-            clientToken = uniqueId;
-        }
+        username = name;
     }
+}
 
-    public class UserName : JsonClass<UserName>
+[Serializable]
+public class Club
+{
+    public string club;
+
+    public Club(string club)
     {
-        public string username;
-
-        public UserName( string name )
-        {
-            username = name;
-        }
+        this.club = club;
     }
+}
 
-    public class Club : JsonClass<Club>
+[Serializable]
+public class GPS
+{
+    public float lat;
+    public float lng;
+
+    public GPS(float latitude, float longitude)
     {
-        public string club;
-
-        public Club( string club )
-        {
-            this.club = club;
-        }
+        lat = latitude;
+        lng = longitude;
     }
+}
 
-    public class GPS : JsonClass<GPS>
-    {
-        public float lat;
-        public float lng;
+[Serializable]
+public class LocationData
+{
+    public double lat;
+    public double lng;
+}
 
-        public GPS( float latitude, float longitude )
-        {
-            lat = latitude;
-            lng = longitude;
-        }
-    }
+[Serializable]
+public class UserData
+{
+    public string username;
+    public string club;
+    public LocationData location;
+    public string pictureUrl;
+    public string clubPictureUrl;
+}
 
-    [Serializable]
-    public class LocationData : JsonClass<LocationData>
-    {
-        public double lat;
-        public double lng;
-    }
+[Serializable]
+public class CardData
+{
+    public string id;
+    public string username;
+    public string pictureUrl;
+    public string clubPictureUrl;
+}
 
-    [Serializable]
-    public class UserData : JsonClass<UserData>
-    {
-        public string username;
-        public string club;
-        public LocationData location;
-        public string pictureUrl;
-        public string clubPictureUrl;
-    }
-
-    [Serializable]
-    public class CardsData : JsonClass<CardsData>
-    {
-        [Serializable]
-        public class CardData
-        {
-            public string id;
-            public string username;
-            public string pictureUrl;
-            public string clubPictureUrl;
-        }
-
-        public CardData[] cards;
-    }
-
-    [Serializable]
-    public class ClubsData : JsonClass<ClubsData>
-    {
-        [Serializable]
-        public class ClubData
-        {
-            public string id;
-            public string logoUrl;
-            public string name;
-            public string league;
-        }
-        public ClubData[] clubs;
-
-        public Dictionary<string, Texture2D> clubsSprites;
-    }
+[Serializable]
+public class ClubData
+{
+    public string id;
+    public string logoUrl;
+    public string name;
+    public string league;
 }

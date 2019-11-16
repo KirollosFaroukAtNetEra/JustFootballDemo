@@ -25,7 +25,7 @@ public class ClubsView : UIView<ClubsModel, ClubsController>
     {
         for (int i = 0; i < clubsScroll.ActiveElements.Count; i++)
         {
-            clubsScroll.ActiveElements[i].Updatedata();
+            clubsScroll.ActiveElements[i].UpdateData();
         }
     }
     public override void DataLoaded()

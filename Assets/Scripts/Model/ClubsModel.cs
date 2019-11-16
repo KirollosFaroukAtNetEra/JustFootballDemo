@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts;
-using UnityEngine;
-
-
-
-public class ClubsModel : UIModel
+﻿public class ClubsModel : UIModel
 {
-    public ClubsData.ClubData[] ClubsList = new ClubsData.ClubData[0];
+    public ClubData[] ClubsList = new ClubData[0];
 
     public void RequestClubs()
     {
-        ApiManager.Instance.GetClubsRequest(null,OnGetClubsComplete);
+        ApiManager.Instance.GetClubsRequest( null, OnGetClubsComplete );
     }
-    private void OnGetClubsComplete(ClubsData.ClubData[] clubsData)
+
+    private void OnGetClubsComplete( ClubData[] clubsData )
     {
         ClubsList = clubsData;
-        NotifyOnPropertyChanged(DataLoadedObserverName);
+        NotifyOnPropertyChanged( DataLoadedObserverName );
     }
 }

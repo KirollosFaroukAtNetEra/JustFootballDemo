@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts;
-using Assets.Scripts.PooledScrollList;
-using UnityEngine;
+﻿using Assets.Scripts.PooledScrollList;
 
-public class CardsScroll : PooledLayoutController<CardsData.CardData,CardItem>
+public class CardsScroll : PooledLayoutController<CardData,CardItem>
 {
 }
