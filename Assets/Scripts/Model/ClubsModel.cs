@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 
@@ -11,7 +12,7 @@ public class ClubsModel : UIModel
 
     public void RequestClubs()
     {
-        ApiManager.Instance.GetClubs(null,OnGetClubsComplete);
+        ApiManager.Instance.GetClubsRequest(null,OnGetClubsComplete);
     }
     private void OnGetClubsComplete(ClubsData.ClubData[] clubsData)
     {

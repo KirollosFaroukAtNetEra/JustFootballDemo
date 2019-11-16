@@ -8,27 +8,30 @@ using UnityEngine.SceneManagement;
 
 public class ApiManager : BaseManager<ApiManager>
 {
-    private const string _apiUrl = "https://demo.dev.justfootball.io/api";
-    private const string _authorizationUrl = _apiUrl + "/auth/token";
-    private const string _getMyUserUrl = _apiUrl + "/user/me";
-    private const string _getUserUrl = _apiUrl + "/user/get/"; // + user id
-    private const string _setUsernameUrl = _apiUrl + "/user/set/username";
-    private const string _setClubUrl = _apiUrl + "/user/set/club";
-    private const string _updateUserLocationUrl = _apiUrl + "/user/set/location";
-    private const string _getCardsUrl = _apiUrl + "/cards";
-    private const string _getAllClubsUrl = _apiUrl + "/clubs";
-    private const string _getClubUrl = _apiUrl + "/club/"; // + club id
+    private const string ApiUrl = "https://demo.dev.justfootball.io/api";
+    private const string AuthorizationUrl = ApiUrl + "/auth/token";
+    private const string GetMyUserUrl = ApiUrl + "/user/me";
+    private const string GetUserUrl = ApiUrl + "/user/get/"; // + user id
+    private const string PostUsernameUrl = ApiUrl + "/user/set/username";
+    private const string PostClubUrl = ApiUrl + "/user/set/club";
+    private const string PostUserLocationUrl = ApiUrl + "/user/set/location";
+    private const string GetCardsUrl = ApiUrl + "/cards";
+    private const string GetAllClubsUrl = ApiUrl + "/clubs";
+    private const string GetClubUrl = ApiUrl + "/club/"; // + club id
 
     private static string _deviceID;
     private static string _authToken;
 
-    private UnityWebRequest request;
+    private UnityWebRequest _request;
 
     public bool IsNewUser = true;
+
     private bool finishLoadUser;
     private bool finishLoadClubs;
     private bool finishLoadCards;
+
     public bool IsConnected;
+
     public override void Awake()
     {
         base.Awake();
@@ -37,174 +40,173 @@ public class ApiManager : BaseManager<ApiManager>
 
     public override void Initialize()
     {
-        StartCoroutine(GetAuthentication());
+        StartCoroutine( GetAuthToken() );
         IsReady = true;
     }
 
-    private IEnumerator GetAuthentication()
+    private void SetRequestInfo( string jsonBody = "" )
     {
-        while (IsConnected == false)
+        _request.SetRequestHeader( "Authorization", $"Bearer {_authToken}" );
+        _request.downloadHandler = new DownloadHandlerBuffer();
+
+        if( !string.IsNullOrEmpty( jsonBody ) )
         {
-            _deviceID = IsNewUser ? Guid.NewGuid().ToString() : _deviceID;
-            var token = new Token(_deviceID);
-            var rawBytes = Encoding.UTF8.GetBytes(token.ToJson());
-            Log("Getting authorization token using this id \"" + _deviceID + "\"");
+            var rawBytes = Encoding.UTF8.GetBytes( jsonBody );
+            _request.uploadHandler = new UploadHandlerRaw( rawBytes );
 
-            request = new UnityWebRequest(_authorizationUrl, "POST");
-            request.uploadHandler = new UploadHandlerRaw(rawBytes);
-            request.downloadHandler = new DownloadHandlerBuffer();
-
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            IsConnected = request.responseCode == 200L;
-            _authToken = request.downloadHandler.text;
-            Log("Calling other requests are allowed? " + IsConnected);
-            yield return new WaitForSeconds(15);
+            _request.SetRequestHeader( "Content-Type", "application/json" );
         }
     }
 
-    private void SetRequestInfo(string jsonBody = "")
-    {
-        request.SetRequestHeader("Authorization", $"Bearer {_authToken}");
-        request.downloadHandler = new DownloadHandlerBuffer();
-
-        if (!string.IsNullOrEmpty(jsonBody))
-        {
-            var rawBytes = Encoding.UTF8.GetBytes(jsonBody);
-            request.uploadHandler = new UploadHandlerRaw(rawBytes);
-
-            request.SetRequestHeader("Content-Type", "application/json");
-        }
-    }
-
-    public void GetUser(UserName userName = null, Action<UserData> onComplete = null)
+    public void GetUserRequest( UserName userName = null, Action<UserData> onComplete = null )
     {
         string playerName = userName != null ? userName.username : "";
-        if (finishLoadUser) StopCoroutine(GetUser(playerName, onComplete));
-        StartCoroutine(GetUser(playerName, onComplete));
+        if( finishLoadUser )
+            StopCoroutine( GetUser( playerName, onComplete ) );
+        StartCoroutine( GetUser( playerName, onComplete ) );
     }
 
-    public void SetUserName(UserName userName, Action onComplete = null)
+    public void PostUserNameRequest( UserName userName, Action onComplete = null )
     {
-        StartCoroutine(SetUserName(userName.ToJson(), onComplete));
+        StartCoroutine( PostUserName( UserName.ToJson( userName ), onComplete ) );
     }
 
-    public void SetClub(Club club, Action onComplete = null)
+    public void SetClubRequest( Club club, Action onComplete = null )
     {
-        StartCoroutine(SetClub(club.ToJson(), onComplete));
+        StartCoroutine( PostClub( Club.ToJson(club), onComplete ) );
     }
 
-    public void GetClubs(Club club = null, Action<ClubsData.ClubData[]> onComplete = null)
+    public void GetClubsRequest( Club club = null, Action<ClubsData.ClubData[]> onComplete = null )
     {
-        string clubName = club != null ? club.club : "" ;
-        if (finishLoadClubs) StopCoroutine(GetClubs(clubName, onComplete));
-        StartCoroutine(GetClubs(clubName, onComplete));
+        string clubName = club != null ? club.club : "";
+        if( finishLoadClubs )
+            StopCoroutine( GetClubs( clubName, onComplete ) );
+        StartCoroutine( GetClubs( clubName, onComplete ) );
     }
 
-    public void GetCardss(Action<CardsData.CardData[]> onComplete = null)
+    public void GetCardsRequest( Action<CardsData.CardData[]> onComplete = null )
     {
-        if (finishLoadCards) StopCoroutine(GetCards(onComplete));
-        StartCoroutine(GetCards(onComplete));
+        if( finishLoadCards )
+            StopCoroutine( GetCards( onComplete ) );
+        StartCoroutine( GetCards( onComplete ) );
     }
 
-    public void UpdUsrLocation(LocationData locInfo, Action onComplete = null)
+    public void SendGpsData( LocationData locInfo, Action onComplete = null )
     {
-        StartCoroutine(UpdUserLocation(JsonUtility.ToJson(locInfo), onComplete));
+        StartCoroutine( PostUserLocation( JsonUtility.ToJson( locInfo ), onComplete ) );
     }
 
-    private IEnumerator GetUser(string userId = "", Action<UserData> onComplete = null)
+    private IEnumerator GetAuthToken()
+    {
+        while( IsConnected == false )
+        {
+            _deviceID = IsNewUser ? Guid.NewGuid().ToString() : _deviceID;
+            var token = new Token( _deviceID );
+            var rawBytes = Encoding.UTF8.GetBytes( Token.ToJson(token) );
+            Debug.Log( "Getting authorization token using this id \"" + _deviceID + "\"" );
+
+            _request = new UnityWebRequest(AuthorizationUrl, "POST")
+            {
+                uploadHandler = new UploadHandlerRaw(rawBytes),
+                downloadHandler = new DownloadHandlerBuffer()
+            };
+
+            _request.SetRequestHeader( "Content-Type", "application/json" );
+
+            yield return _request.SendWebRequest();
+
+            IsConnected = _request.responseCode == 200L;
+            _authToken = _request.downloadHandler.text;
+            Debug.Log( "Calling other requests are allowed? " + IsConnected );
+            yield return new WaitForSeconds( 15 );
+        }
+    }
+
+    private IEnumerator GetUser( string userId = "", Action<UserData> onComplete = null )
     {
         StringBuilder url = new StringBuilder();
-        if (!string.IsNullOrEmpty(userId))
-            url.Append(_getUserUrl).Append(userId);
+        if( !string.IsNullOrEmpty( userId ) )
+            url.Append( GetUserUrl ).Append( userId );
         else
-            url.Append(_getMyUserUrl);
+            url.Append( GetMyUserUrl );
 
-        request = new UnityWebRequest(url.ToString(), "GET");
+        _request = new UnityWebRequest( url.ToString(), "GET" );
 
         SetRequestInfo();
 
-        yield return request.SendWebRequest();
+        yield return _request.SendWebRequest();
 
-        Log(request.downloadHandler.text);
-        var usr = JsonUtility.FromJson<UserData>(request.downloadHandler.text);
-        onComplete?.Invoke(usr);
-        Log(usr.ToString());
+        Debug.Log( _request.downloadHandler.text );
+        var usr = UserData.CreateFromJson( _request.downloadHandler.text );
+        onComplete?.Invoke( usr );
+        Debug.Log( usr.ToString() );
     }
 
-    private IEnumerator SetUserName(string newUserName, Action onComplete = null)
+    private IEnumerator GetCards( Action<CardsData.CardData[]> onComplete = null )
     {
-        request = new UnityWebRequest(_setUsernameUrl, "POST");
-        SetRequestInfo(newUserName);
-        yield return request.SendWebRequest();
-        Log(request.downloadHandler.text);
+        _request = new UnityWebRequest( GetCardsUrl, "GET" );
+        SetRequestInfo();
+
+        yield return _request.SendWebRequest();
+
+        StringBuilder response = new StringBuilder();
+        response.Append( _request.downloadHandler.text ).Insert( 0, "{\"cards\":" ).Append( '}' );
+        var cards = CardsData.CreateFromJson( response.ToString() );
+        onComplete?.Invoke( cards.cards );
+    }
+
+    private IEnumerator GetClubs( string clubId = "", Action<ClubsData.ClubData[]> onComplete = null )
+    {
+        Debug.Log( "GetClubs Started > " );
+        StringBuilder url = new StringBuilder();
+        if( !string.IsNullOrEmpty( clubId ) )
+            url.Append( GetClubUrl + clubId );
+        else
+            url.Append( GetAllClubsUrl );
+
+        _request = new UnityWebRequest( url.ToString(), "GET" );
+
+        SetRequestInfo();
+
+        yield return _request.SendWebRequest();
+        Debug.Log( "GetClubs SendWebRequest > " );
+
+        StringBuilder response = new StringBuilder();
+        response.Append( _request.downloadHandler.text ).Insert( 0, "{\"clubs\":" ).Append( '}' );
+        var clubs = ClubsData.CreateFromJson( response.ToString() );
+        DataManager.Instance.DownloadSprites( clubs );
+        onComplete?.Invoke( clubs.clubs );
+        Debug.Log( "GetClubs Finished > " );
+
+    }
+
+    private IEnumerator PostUserName( string newUserName, Action onComplete = null )
+    {
+        _request = new UnityWebRequest( PostUsernameUrl, "POST" );
+        SetRequestInfo( newUserName );
+        yield return _request.SendWebRequest();
+        Debug.Log( _request.downloadHandler.text );
 
         onComplete?.Invoke();
     }
 
-    private IEnumerator SetClub(string clubId, Action onComplete = null)
+    private IEnumerator PostClub(string clubId, Action onComplete = null)
     {
-        request = new UnityWebRequest(_setClubUrl, "POST");
+        _request = new UnityWebRequest(PostClubUrl, "POST");
         SetRequestInfo(clubId);
-        yield return request.SendWebRequest();
-        Log(request.downloadHandler.text);
+        yield return _request.SendWebRequest();
+        Debug.Log(_request.downloadHandler.text);
 
         onComplete?.Invoke();
     }
 
-    private IEnumerator UpdUserLocation(string locJson, Action onComplete = null)
+    private IEnumerator PostUserLocation(string locJson, Action onComplete = null)
     {
-        request = new UnityWebRequest(_updateUserLocationUrl, "POST");
+        _request = new UnityWebRequest(PostUserLocationUrl, "POST");
         SetRequestInfo(locJson);
-        yield return request.SendWebRequest();
-        Log(request.downloadHandler.text);
+        yield return _request.SendWebRequest();
+        Debug.Log(_request.downloadHandler.text);
 
         onComplete?.Invoke();
     }
-
-    private IEnumerator GetCards(Action<CardsData.CardData[]> onComplete = null)
-    {
-        request = new UnityWebRequest(_getCardsUrl, "GET");
-        SetRequestInfo();
-
-        yield return request.SendWebRequest();
-
-        StringBuilder response = new StringBuilder();
-        response.Append(request.downloadHandler.text).Insert(0, "{\"cards\":").Append('}');
-        var cards = JsonUtility.FromJson<CardsData>(response.ToString());
-        onComplete?.Invoke(cards.cards);
-    }
-
-    private IEnumerator GetClubs(string clubId = "", Action<ClubsData.ClubData[]> onComplete = null)
-    {
-        Debug.Log("GetClubs Started > ");
-        StringBuilder url = new StringBuilder();
-        if (!string.IsNullOrEmpty(clubId))
-            url.Append(_getClubUrl + clubId);
-        else
-            url.Append(_getAllClubsUrl);
-
-        request = new UnityWebRequest(url.ToString(), "GET");
-
-        SetRequestInfo();
-
-        yield return request.SendWebRequest();
-        Debug.Log("GetClubs SendWebRequest > ");
-
-        StringBuilder response = new StringBuilder();
-        response.Append(request.downloadHandler.text).Insert(0, "{\"clubs\":").Append('}');
-        var clubs = JsonUtility.FromJson<ClubsData>(response.ToString());
-        DataManager.Instance.DownloadSprites(clubs);
-        onComplete?.Invoke(clubs.clubs);
-        Debug.Log("GetClubs Finished > ");
-
-    }
-
-    private void Log(string strToLog)
-    {
-        Debug.Log("[ApiManager] " + strToLog);
-    }
-
 }

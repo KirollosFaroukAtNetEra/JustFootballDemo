@@ -15,7 +15,7 @@ public class ClubsController : UIController<ClubsModel>
     public void OnClubItemClicked(string ClubID)
     {
         Debug.Log("ClubClicked " + ClubID);
-        ApiManager.Instance.SetClub( new Club( ClubID ),
+        ApiManager.Instance.SetClubRequest( new Club( ClubID ),
             () =>
             {
                 DataManager.Instance.MyData.club = ClubID;

@@ -21,7 +21,7 @@ public class ProfileController : UIController<ProfileModel>
 
     public void OnChangeNameClicked(string newUserName)
     {
-        ApiManager.Instance.SetUserName( new UserName( newUserName ),
+        ApiManager.Instance.PostUserNameRequest( new UserName( newUserName ),
             () =>
             {
                 Debug.Log( "Update Name Complete" );

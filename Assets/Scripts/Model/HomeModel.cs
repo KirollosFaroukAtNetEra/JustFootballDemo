@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 [System.Serializable]
@@ -20,7 +21,7 @@ public class HomeModel : UIModel
 
     public void RequestProfileData()
     {
-        ApiManager.Instance.GetUser(null, OnGetUserData);
+        ApiManager.Instance.GetUserRequest(null, OnGetUserData);
     }
     private void OnGetUserData(UserData userData)
     {

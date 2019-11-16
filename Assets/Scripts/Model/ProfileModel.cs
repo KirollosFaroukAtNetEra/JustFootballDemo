@@ -22,7 +22,7 @@ public class ProfileModel : UIModel
     public void RequestProfileData(string userId="")
     {
         IsMyProfile = userId == string.Empty;
-        ApiManager.Instance.GetUser(new UserName( userId ), OnGetUserData);
+        ApiManager.Instance.GetUserRequest(new UserName( userId ), OnGetUserData);
     }
     private void OnGetUserData(UserData userData)
     {

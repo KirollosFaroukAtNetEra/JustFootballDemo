@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 public class CardsModel : UIModel
@@ -8,7 +9,7 @@ public class CardsModel : UIModel
 
     public void RequestCards()
     {
-        ApiManager.Instance.GetCardss(OnGetCardsComplete);
+        ApiManager.Instance.GetCardsRequest(OnGetCardsComplete);
     }
     private void OnGetCardsComplete(CardsData.CardData[] cardsData)
     {

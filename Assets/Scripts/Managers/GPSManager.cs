@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 public enum LocationState
@@ -95,6 +96,6 @@ public class GPSManager : BaseManager<GPSManager>
             lng = LastData.longitude
         };
 
-        ApiManager.Instance.UpdUsrLocation(newLocation);
+        ApiManager.Instance.SendGpsData(newLocation);
     }
 }
