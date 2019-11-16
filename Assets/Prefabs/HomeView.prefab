@@ -459,11 +459,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63af754fdd7f44ab3ae2821ebfecaed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ViewGameObject: {fileID: 6108772631504968725}
+  ViewParent: {fileID: 6108772631504968725}
   LoadingAnimation: {fileID: 4581138194877360862}
-  isLoaded: 0
+  isViewLoaded: 0
   isDataLoadedFromServer: 0
   Model:
+    DataLoadedObserverName: DataLoaded
     playerData:
       username: 
       club: 
