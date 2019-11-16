@@ -28,17 +28,10 @@ public class ClubsView : UIView<ClubsModel, ClubsController>
             clubsScroll.ActiveElements[i].Updatedata();
         }
     }
-
-    public override void RegisterDependency()
-    {
-        base.RegisterDependency();
-        Model.ListenOnPropertyChanged("ClubsList", ClubsListChanged);
-        isLoaded = true;
-    }
-    private void ClubsListChanged()
+    public override void DataLoaded()
     {
         Debug.Log("Clubs List Count > " + Model.ClubsList.Length);
-        if ( Model.ClubsList.Length > 0 && clubsScroll != null)
+        if (Model.ClubsList.Length > 0 && clubsScroll != null)
         {
             clubsScroll.Initialize(Model.ClubsList.ToList());
             LoadingAnimation.SetActive(false);

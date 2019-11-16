@@ -10,13 +10,7 @@ public class CardsView : UIView<CardsModel,CardsController>
     public List<CardItem> CardsList;
     public CardsScroll cardsScroll;
 
-    public override void RegisterDependency()
-    {
-        base.RegisterDependency();
-        Model.ListenOnPropertyChanged("CardsList", CardsListChanged);
-        isLoaded = true;
-    }
-    private void CardsListChanged()
+    public override void DataLoaded()
     {
         if(Model.CardsList.Length > 0 && cardsScroll != null)
         {

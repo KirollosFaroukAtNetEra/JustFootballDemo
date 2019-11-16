@@ -7,16 +7,10 @@ public class HomeView : UIView<HomeModel, HomeController>
 {
     public Text playerName;
     public Image playerImage;
-    public override void RegisterDependency()
-    {
-        base.RegisterDependency();
-        Model.ListenOnPropertyChanged("PlayerData", UpdateView);
-        isLoaded = true;
-    }
 
-    public void UpdateView()
+    public override void DataLoaded()
     {
-        if(Model.playerData != null && Model.playerData.pictureUrl != "")
+        if (Model.playerData != null && Model.playerData.pictureUrl != "")
         {
             DataManager.Instance.GetSpriteByUrl(Model.playerData.pictureUrl,
                 (image) => { playerImage.sprite = image; });

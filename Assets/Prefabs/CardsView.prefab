@@ -505,9 +505,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb73bf753591b3943b22f891bbfe9f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ViewGameObject: {fileID: 4200301599187940073}
+  ViewParent: {fileID: 4200301599187940073}
   LoadingAnimation: {fileID: 4581138195606016493}
-  isLoaded: 0
+  isViewLoaded: 0
   isDataLoadedFromServer: 0
   CardsContent: {fileID: 4200301598548258916}
   CardItemPrefab: {fileID: 1062140437322405864, guid: 20eb8e275294b564a8f5452464d1aa20,

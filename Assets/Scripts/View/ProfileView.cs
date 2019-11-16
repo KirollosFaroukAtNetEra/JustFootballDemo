@@ -58,14 +58,7 @@ public class ProfileView : UIView<ProfileModel, ProfileController>
         SettingIcon.gameObject.SetActive(IsMyProfile);
     }
 
-    public override void RegisterDependency()
-    {
-        base.RegisterDependency();
-        Model.ListenOnPropertyChanged("PlayerData", UpdateViewData);
-        isLoaded = true;
-    }
-
-    private void UpdateViewData()
+    public override void DataLoaded()
     {
         if (Model.PlayerData == null)
         {
