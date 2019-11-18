@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UIViewBase : MonoBehaviour
 {
@@ -12,22 +10,25 @@ public class UIViewBase : MonoBehaviour
     public virtual void Awake()
     {
         GetComponent<Canvas>().worldCamera = Camera.main;
-        LoadingAnimation.SetActive(true);
+        LoadingAnimation.SetActive( true );
     }
+
     public virtual void RegisterDependency()
-    {
-    }
-    public virtual void SetupView(object dataObject = null)
-    {
-    }
+    { }
+
+    public virtual void SetupView( object dataObject = null )
+    { }
+
     public virtual void ShowView()
     {
-        ViewParent.SetActive(true);
+        ViewParent.SetActive( true );
     }
+
     public virtual void HideView()
     {
-        ViewParent.SetActive(false);
+        ViewParent.SetActive( false );
     }
+
     public virtual void CloseView()
     {
         ViewsManager.Instance.CloseOnTopOfStack();

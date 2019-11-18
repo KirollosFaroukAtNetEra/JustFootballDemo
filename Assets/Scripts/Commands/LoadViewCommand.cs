@@ -12,7 +12,6 @@ public class LoadViewCommand : Command
         _viewType = viewType;
     }
 
-
     public override void Execute( Action OnComplete )
     {
         LoadView();

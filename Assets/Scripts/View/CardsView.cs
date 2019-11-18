@@ -3,54 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CardsView : UIView<CardsModel,CardsController>
+public class CardsView : UIView<CardsModel, CardsController>
 {
     public RectTransform CardsContent;
     public GameObject CardItemPrefab;
     public List<CardItem> CardsList;
-    public CardsScroll cardsScroll;
+    public CardsScroll ScrollRect;
 
     public override void DataLoaded()
     {
-        if(Model.CardsList.Length > 0 && cardsScroll != null)
+        if( Model.CardsList.Length > 0 &&
+            ScrollRect != null )
         {
-            cardsScroll.Initialize(Model.CardsList.ToList());
-            for ( int i = 0; i < cardsScroll.ActiveElements.Count; i++ )
+            ScrollRect.Initialize( Model.CardsList.ToList() );
+            for( int i = 0; i < ScrollRect.ActiveElements.Count; i++ )
             {
-                HandleClubItemData(cardsScroll.ActiveElements[ i ] );
+                HandleClubItemData( ScrollRect.ActiveElements[ i ] );
             }
-            LoadingAnimation.SetActive(false);
+
+            LoadingAnimation.SetActive( false );
         }
     }
-    private void HandleClubItemData( CardItem cardItem)
+
+    private void HandleClubItemData( CardItem cardItem )
     {
         cardItem.CardButton.onClick.RemoveAllListeners();
         cardItem.CardButton.onLongPress.RemoveAllListeners();
         cardItem.CardButton.onLongPressCanceled.RemoveAllListeners();
-        cardItem.CardButton.onClick.AddListener(() => { OnCardClicked(cardItem); });
-        cardItem.CardButton.onLongPress.AddListener(() => { OnCardLongPressed(cardItem); });
-        cardItem.CardButton.onLongPressCanceled.AddListener(() => { OnLongPressCanceled(cardItem.gameObject); });
-        cardItem.CardButton.onLongPressStart.AddListener(() => { StartShakeAnimation(cardItem.gameObject); });
-
-    }
-    private void OnCardClicked(CardItem cardItem)
-    {
-        Controller.OnCardItemClicked(cardItem.Data.id);
+        cardItem.CardButton.onClick.AddListener( () => { OnCardClicked( cardItem ); } );
+        cardItem.CardButton.onLongPress.AddListener( () => { OnCardLongPressed( cardItem ); } );
+        cardItem.CardButton.onLongPressCanceled.AddListener( () => { OnLongPressCanceled( cardItem.gameObject ); } );
+        cardItem.CardButton.onLongPressStart.AddListener( () => { StartShakeAnimation( cardItem.gameObject ); } );
     }
 
-    private void OnCardLongPressed(CardItem cardItem)
+    private void OnCardClicked( CardItem cardItem )
     {
-        cardsScroll.Remove(cardItem.Data);
-        ViewsManager.Instance.ShowAlert("Card Deleted");
-        AnimationManager.Instance.StopAnimation(cardItem.gameObject, AnimationType.Shake);
+        Controller.OnCardItemClicked( cardItem.Data.id );
     }
 
-    private void OnLongPressCanceled(GameObject button)
+    private void OnCardLongPressed( CardItem cardItem )
     {
-        AnimationManager.Instance.StopAnimation(button, AnimationType.Shake);
+        ScrollRect.Remove( cardItem.Data );
+        ViewsManager.Instance.ShowAlert( "Card Deleted" );
+        AnimationManager.Instance.StopAnimation( cardItem.gameObject, AnimationType.Shake );
     }
-    private void StartShakeAnimation(GameObject button)
+
+    private void OnLongPressCanceled( GameObject button )
     {
-        AnimationManager.Instance.AddAnimation(AnimationType.Shake, button);
+        AnimationManager.Instance.StopAnimation( button, AnimationType.Shake );
+    }
+
+    private void StartShakeAnimation( GameObject button )
+    {
+        AnimationManager.Instance.AddAnimation( AnimationType.Shake, button );
     }
 }

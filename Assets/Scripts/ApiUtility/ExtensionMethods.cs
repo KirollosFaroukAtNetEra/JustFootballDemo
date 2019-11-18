@@ -29,7 +29,7 @@ public static class ExtensionMethods
 
     public static void SetRequestInfo( this UnityWebRequest req, string jsonBody = "" )
     {
-        req.SetRequestHeader( "Authorization", $"Bearer {ApiManager._authToken}" );
+        req.SetRequestHeader( "Authorization", $"Bearer {ApiManager.AuthToken}" );
         req.downloadHandler = new DownloadHandlerBuffer();
 
         if( !string.IsNullOrEmpty( jsonBody ) )

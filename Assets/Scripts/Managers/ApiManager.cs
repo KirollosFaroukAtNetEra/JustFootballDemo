@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ApiManager : BaseManager<ApiManager>
 {
-    public static string _authToken;
+    public static string AuthToken;
 
     public bool IsNewUser = true;
     public bool IsConnected;
@@ -22,7 +22,7 @@ public class ApiManager : BaseManager<ApiManager>
             SuccessCallBack = ( b, s ) =>
             {
                 IsConnected = b;
-                _authToken = s;
+                AuthToken = s;
             }
         } ) );
 
@@ -33,9 +33,10 @@ public class ApiManager : BaseManager<ApiManager>
 
     private IEnumerator CheckQueue()
     {
+        var delay = new WaitForSeconds( _resyncTime );
         while( true )
         {
-            yield return new WaitForSeconds( _resyncTime );
+            yield return delay;
 
             while( Requests.Count > 0 )
             {
@@ -98,7 +99,7 @@ public class ApiManager : BaseManager<ApiManager>
         } ) );
     }
 
-    private IEnumerator SendRequest<T>( T request ) where T : RequestBase
+    private static IEnumerator SendRequest<T>( T request ) where T : RequestBase
     {
         var webRequest = request.GetRequest();
 
