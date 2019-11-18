@@ -1,19 +1,23 @@
-﻿public static class AnimationFactory
+﻿using System;
+
+public static class AnimationFactory
 {
-    public static AnimationBehaviour MakeAnimation(AnimationType animationType)
+    public static Type MakeAnimation(AnimationType animationType)
     {
         switch (animationType)
         {
             case AnimationType.Shake:
-                return new Shake();
+                return typeof(Shake);
             case AnimationType.FadeIn:
-                return new FadeIn();
+                return typeof(FadeIn);
             case AnimationType.FadeOut:
-                return new FadeOut();
+                return typeof(FadeOut);
             case AnimationType.ScaleIn:
-                return new ScaleIn();
+                return typeof(ScaleIn);
             case AnimationType.ScaleOut:
-                return new ScaleOut();
+                return typeof(ScaleOut);
+            case AnimationType.MoveTopDown:
+                return typeof(MoveTopDown);
             default:
                 return null;
         }

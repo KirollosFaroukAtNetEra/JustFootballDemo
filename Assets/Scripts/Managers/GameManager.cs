@@ -14,18 +14,18 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         base.Awake();
         Command animationManagerCommand = new LoadManagerCommand( this, new List<GameObject> { animationManager } );
-        commands.Enqueue( animationManagerCommand );
         Command splashAnimation = new TransitionAnimationCommand( this, AnimationType.SplashScene, false );
-        commands.Enqueue( splashAnimation );
         Command transitionAnimation = new TransitionAnimationCommand( this, AnimationType.Transition, true );
-        commands.Enqueue( transitionAnimation );
         Command managersCommand = new LoadManagerCommand( this, ManagersInGame );
-        commands.Enqueue( managersCommand );
         Command loadSceneCommand = new LoadSceneCOmmand( this, ScenesType.MainScene );
-        commands.Enqueue( loadSceneCommand );
         Command loadMainViewCommand = new LoadViewCommand( this, ViewType.HomeView );
-        commands.Enqueue( loadMainViewCommand );
         Command transitionAnimationClose = new TransitionAnimationCommand( this, AnimationType.Transition, false );
+        commands.Enqueue(animationManagerCommand);
+        commands.Enqueue(splashAnimation);
+        commands.Enqueue(transitionAnimation);
+        commands.Enqueue(managersCommand);
+        commands.Enqueue(loadSceneCommand);
+        commands.Enqueue(loadMainViewCommand);
         commands.Enqueue( transitionAnimationClose );
         StartLoadGame();
     }

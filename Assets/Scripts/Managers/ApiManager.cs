@@ -23,12 +23,12 @@ public class ApiManager : BaseManager<ApiManager>
             {
                 IsConnected = b;
                 _authToken = s;
+                IsReady = true;
             }
         } ) );
 
         StartCoroutine( CheckQueue() );
 
-        IsReady = true;
     }
 
     private IEnumerator CheckQueue()

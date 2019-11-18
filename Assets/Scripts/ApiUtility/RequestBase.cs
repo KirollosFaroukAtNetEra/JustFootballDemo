@@ -6,7 +6,7 @@ public enum HTTPReqType
     GET,
     POST
 }
-
+ 
 public abstract class RequestBase
 {
     protected const string ApiUrl = "https://demo.dev.justfootball.io/api";

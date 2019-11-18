@@ -10,6 +10,10 @@ public enum AnimationType
     ScaleOut,
     SplashScene,
     Transition,
+    MoveTopDown,
+    MoveDown,
+    MoveLeft,
+    MoveRight,
     None
 }
 
@@ -25,8 +29,12 @@ public class AnimationManager : BaseManager<AnimationManager>
         IsReady = true;
     }
 
-    public void AddAnimation( AnimationType animationType, GameObject refrenceGameObject, bool resetToOriginal = true )
+    public void AddAnimation( AnimationType animationType, GameObject refrenceGameObject, bool resetToOriginal = true,ScriptableObject animationSettings = null)
     {
+        if (animationType == AnimationType.None)
+        {
+            return;
+        }
         if( !AnimationList.ContainsKey( refrenceGameObject ) )
             AnimationList.Add( refrenceGameObject, new List<AnimationHandler>() );
 
@@ -38,6 +46,7 @@ public class AnimationManager : BaseManager<AnimationManager>
         animationHandler.RefrenceObject = refrenceGameObject;
         animationHandler.resetToOriginal = resetToOriginal;
         AnimationList[ refrenceGameObject ].Add( animationHandler );
+        if (animationSettings != null) animationHandler.animationSettings = animationSettings;
         animationHandler.Start();
 
     }

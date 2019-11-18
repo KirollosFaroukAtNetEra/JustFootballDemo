@@ -8,10 +8,12 @@ public class UIViewBase : MonoBehaviour
     public GameObject LoadingAnimation;
     public bool isViewLoaded;
     public bool isDataLoadedFromServer;
-
+    public AnimationType AnimationOnOpen;
+    public AnimationType AnimationOnClose;
+    public ScriptableObject OpenAnimationSettings;
     public virtual void Awake()
     {
-        GetComponent<Canvas>().worldCamera = Camera.main;
+        ViewParent.SetActive(false);
         LoadingAnimation.SetActive(true);
     }
     public virtual void RegisterDependency()
@@ -22,11 +24,12 @@ public class UIViewBase : MonoBehaviour
     }
     public virtual void ShowView()
     {
+        AnimationManager.Instance.AddAnimation(AnimationOnOpen, ViewParent,false, OpenAnimationSettings);
         ViewParent.SetActive(true);
     }
     public virtual void HideView()
     {
-        ViewParent.SetActive(false);
+        gameObject.SetActive(false);
     }
     public virtual void CloseView()
     {

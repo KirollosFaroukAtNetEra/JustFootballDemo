@@ -557,6 +557,10 @@ MonoBehaviour:
   LoadingAnimation: {fileID: 4581138194877360862}
   isViewLoaded: 0
   isDataLoadedFromServer: 0
+  AnimationOnOpen: 7
+  AnimationOnClose: 11
+  OpenAnimationSettings: {fileID: 11400000, guid: c7c8c3d702c099943ac93454fac1ec8d,
+    type: 2}
   Model:
     DataLoadedObserverName: DataLoaded
     playerData:

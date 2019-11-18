@@ -530,6 +530,8 @@ MonoBehaviour:
   LoadingAnimation: {fileID: 4581138195390333640}
   isViewLoaded: 0
   isDataLoadedFromServer: 0
+  AnimationOnOpen: 7
+  AnimationOnClose: 7
   ClubsScrollContent: {fileID: 3646986429286654004}
   ClubPrefab: {fileID: 6327236165126194737, guid: 31f16d40a21ada146b24dede6ffbaf77,
     type: 3}

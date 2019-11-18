@@ -838,10 +838,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5174f5e160481174784fc1441ec01bb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ViewParent: {fileID: 4341046621464373002}
+  ViewParent: {fileID: 4341046622606252128}
   LoadingAnimation: {fileID: 4581138195117858728}
   isViewLoaded: 0
   isDataLoadedFromServer: 0
+  AnimationOnOpen: 7
+  AnimationOnClose: 11
+  OpenAnimationSettings: {fileID: 11400000, guid: c7c8c3d702c099943ac93454fac1ec8d,
+    type: 2}
   Model:
     DataLoadedObserverName: DataLoaded
     IsMyProfile: 0
