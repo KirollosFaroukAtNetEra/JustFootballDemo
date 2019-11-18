@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ public class CardsView : UIView<CardsModel, CardsController>
 
     public override void DataLoaded()
     {
-        if( Model.CardsList.Length > 0 &&
+        if ( Model.CardsList.Length > 0 &&
             ScrollRect != null )
         {
             ScrollRect.Initialize( Model.CardsList.ToList() );

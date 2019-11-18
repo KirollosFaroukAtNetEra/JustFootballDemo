@@ -5,29 +5,29 @@ using UnityEngine;
 
 public class LoadManagerCommand : Command
 {
-    MonoBehaviour _monoBehavourToRunCoroutine;
-    List<GameObject> _listOfManagers;
+    private MonoBehaviour _monoBehaviourToRunCoroutine;
+    private List<GameObject> _listOfManagers;
 
-    public LoadManagerCommand( MonoBehaviour MonoBehaviourClass, List<GameObject> listOfManagers )
+    public LoadManagerCommand( MonoBehaviour monoBehaviourClass, List<GameObject> listOfManagers )
     {
-        _monoBehavourToRunCoroutine = MonoBehaviourClass;
+        _monoBehaviourToRunCoroutine = monoBehaviourClass;
         _listOfManagers = listOfManagers;
     }
 
 
-    public override void Execute( Action OnComplete )
+    public override void Execute( Action onComplete )
     {
-        _monoBehavourToRunCoroutine.StartCoroutine( InitAllManagers() );
+        _monoBehaviourToRunCoroutine.StartCoroutine( InitAllManagers() );
     }
 
-    IEnumerator InitAllManagers()
+    private IEnumerator InitAllManagers()
     {
         foreach( var item in _listOfManagers )
         {
-            var SomeManager = GameObject.Instantiate( item );
-            var SomeManagerScript = SomeManager.GetComponent<IManagers>();
-            SomeManagerScript.Initialize();
-            yield return new WaitUntil( () => SomeManagerScript.IsReady );
+            var someManager = GameObject.Instantiate( item );
+            var someManagerScript = someManager.GetComponent<IManagers>();
+            someManagerScript.Initialize();
+            yield return new WaitUntil( () => someManagerScript.IsReady );
         }
 
         IsFinished = true;

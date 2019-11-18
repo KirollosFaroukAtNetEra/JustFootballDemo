@@ -4,12 +4,12 @@
 
     public void GetCards()
     {
-        ApiManager.Instance.GetCardsRequest(OnGetCardsComplete);
-    }
-    private void OnGetCardsComplete(CardData[] cardsData)
-    {
-        CardsList = cardsData;
-        NotifyOnPropertyChanged(DataLoadedObserverName);
+        ApiManager.Instance.GetCardsRequest( OnGetCardsComplete );
     }
 
+    private void OnGetCardsComplete( CardData[] cardsData )
+    {
+        CardsList = cardsData;
+        NotifyOnPropertyChanged( DataLoadedObserverName );
+    }
 }

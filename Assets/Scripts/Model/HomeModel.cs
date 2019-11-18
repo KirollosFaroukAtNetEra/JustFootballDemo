@@ -5,7 +5,7 @@ public class HomeModel : UIModel
 
     public HomeModel()
     {
-        Events.instance.AddListener<ProfileNameUpdated>(OnProfileNameUpdated);
+        Events.Instance.AddListener<ProfileNameUpdated>(OnProfileNameUpdated);
     }
 
     private void OnProfileNameUpdated(ProfileNameUpdated e)
@@ -27,6 +27,6 @@ public class HomeModel : UIModel
 
     ~HomeModel()
     {
-        Events.instance.RemoveListener<ProfileNameUpdated>(OnProfileNameUpdated);
+        Events.Instance.RemoveListener<ProfileNameUpdated>(OnProfileNameUpdated);
     }
 }

@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class LoadViewCommand : Command
 {
-    MonoBehaviour _monoBehavourToRunCoroutine;
-    ViewType _viewType;
+    private MonoBehaviour _monoBehaviourToRunCoroutine;
+    private ViewType _viewType;
 
-    public LoadViewCommand( MonoBehaviour MonoBehaviourClass, ViewType viewType )
+    public LoadViewCommand( MonoBehaviour monoBehaviourClass, ViewType viewType )
     {
-        _monoBehavourToRunCoroutine = MonoBehaviourClass;
+        _monoBehaviourToRunCoroutine = monoBehaviourClass;
         _viewType = viewType;
     }
 
-    public override void Execute( Action OnComplete )
+    public override void Execute( Action onComplete )
     {
         LoadView();
     }
 
-    void LoadView()
+    private void LoadView()
     {
         ViewsManager.Instance.OpenView( _viewType, null, () => { IsFinished = true; } );
     }

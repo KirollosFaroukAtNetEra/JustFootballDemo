@@ -19,16 +19,14 @@ public class ApiManager : BaseManager<ApiManager>
         StartCoroutine( SendRequest( new AuthenticationRequest()
         {
             IsNewUser = true,
-            SuccessCallBack = ( b, s ) =>
+            SuccessCallBack = ( isDone, token ) =>
             {
-                IsConnected = b;
-                AuthToken = s;
+                IsConnected = IsReady = isDone;
+                AuthToken = token;
             }
         } ) );
 
         StartCoroutine( CheckQueue() );
-
-        IsReady = true;
     }
 
     private IEnumerator CheckQueue()

@@ -17,11 +17,11 @@ public class GPSManager : BaseManager<GPSManager>
 
     public override void Initialize()
     {
-        StartCoroutine( InitalizeGpsService() );
+        StartCoroutine( InitializeGpsService() );
         IsReady = true;
     }
 
-    private IEnumerator InitalizeGpsService()
+    private IEnumerator InitializeGpsService()
     {
         if( !Input.location.isEnabledByUser )
         {
@@ -55,7 +55,6 @@ public class GPSManager : BaseManager<GPSManager>
             LastData = Input.location.lastData;
         }
     }
-
 
     //get delta movement
     private static float Haversine( float lastLatitude, float lastLongitude )

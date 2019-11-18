@@ -10,12 +10,11 @@ public class ClubsController : UIController<ClubsModel>
 
     public void OnClubItemClicked( string ClubID )
     {
-        Debug.Log( "ClubClicked " + ClubID );
         ApiManager.Instance.SetClubRequest( new Club( ClubID ),
             () =>
             {
                 DataManager.Instance.MyData.club = ClubID;
-                Events.instance.Raise( new ClubDataUpdated( ClubID ) );
+                Events.Instance.Raise( new ClubDataUpdated( ClubID ) );
             } );
     }
 }

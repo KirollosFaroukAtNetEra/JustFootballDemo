@@ -6,6 +6,6 @@ using UnityEngine;
 public interface ICommand
 {
     bool IsFinished { get; set; }
-    void Execute(Action OnComplete);
+    void Execute(Action onComplete);
     void Undo();
 }

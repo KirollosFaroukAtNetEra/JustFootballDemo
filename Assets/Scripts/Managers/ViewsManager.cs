@@ -28,9 +28,7 @@ public enum ScenesType
 public class ViewsManager : BaseManager<ViewsManager>
 {
     private List<UIViewBase> _viewsStack;
-    private Command _transitionViewsAnimationIn;
-    private Command _transitionViewsAnimationOut;
-    private bool _isWaitingForLoading = false;
+    private bool _isWaitingForLoading;
 
     public GameObject AlertGameObject;
     public List<ViewData> ViewsObjectsList;
@@ -38,8 +36,6 @@ public class ViewsManager : BaseManager<ViewsManager>
     public override void Initialize()
     {
         _viewsStack = new List<UIViewBase>();
-        _transitionViewsAnimationIn = new TransitionAnimationCommand( this, AnimationType.Transition, true );
-        _transitionViewsAnimationOut = new TransitionAnimationCommand( this, AnimationType.Transition, false );
         IsReady = true;
     }
 
@@ -75,23 +71,20 @@ public class ViewsManager : BaseManager<ViewsManager>
         StartCoroutine( LoadView( viewType, dataObject, OnComplete ) );
     }
 
-    IEnumerator LoadView( ViewType viewType, object dataObject = null, Action OnComplete = null )
+    private IEnumerator LoadView( ViewType viewType, object dataObject = null, Action onComplete = null )
     {
         _isWaitingForLoading = true;
-        _transitionViewsAnimationIn.Execute( null );
-        yield return new WaitUntil( () => _transitionViewsAnimationIn.IsFinished );
-
         DisableOnTopOfStack();
+        
         var viewObject = Instantiate( ViewsObjectsList.First( view => view.Type == viewType ).ViewObject );
         var viewToOpen = viewObject.GetComponent<UIViewBase>();
+        
         viewToOpen.SetupView( dataObject );
         _viewsStack.Add( viewToOpen );
-        yield return new WaitUntil( () => viewToOpen.isViewLoaded );
+        yield return new WaitUntil( () => viewToOpen.IsViewLoaded );
 
-        OnComplete?.Invoke();
+        onComplete?.Invoke();
 
-        _transitionViewsAnimationOut.Execute( null );
-        yield return new WaitUntil( () => _transitionViewsAnimationOut.IsFinished );
         _isWaitingForLoading = false;
     }
 
@@ -102,7 +95,7 @@ public class ViewsManager : BaseManager<ViewsManager>
             return;
         }
 
-        _viewsStack[ _viewsStack.Count - 1 ].gameObject.SetActive( false );
+        _viewsStack[ _viewsStack.Count - 1 ].HideView();
     }
 
     public void CloseOnTopOfStack()
@@ -123,17 +116,10 @@ public class ViewsManager : BaseManager<ViewsManager>
             yield break;
         }
 
-        _transitionViewsAnimationIn.Execute( null );
-        yield return new WaitUntil( () => _transitionViewsAnimationIn.IsFinished );
-
         var viewToClose = _viewsStack[ _viewsStack.Count - 1 ];
         _viewsStack.Remove( viewToClose );
         Destroy( viewToClose.gameObject );
-
         EnableOnTopOfStack();
-
-        _transitionViewsAnimationOut.Execute( null );
-        yield return new WaitUntil( () => _transitionViewsAnimationOut.IsFinished );
         _isWaitingForLoading = false;
     }
 

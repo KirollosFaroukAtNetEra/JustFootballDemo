@@ -5,28 +5,30 @@ using UnityEngine;
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     [SerializeField]
-    List<GameObject> ManagersInGame = new List<GameObject>();
-    public GameObject animationManager;
-    [SerializeField]
-    Queue<Command> commands = new Queue<Command>();
+    private List<GameObject> _managersInGame = new List<GameObject>();
+    private Queue<Command> _commands = new Queue<Command>();
+
+    public GameObject AnimationManager;
 
     public override void Awake()
     {
         base.Awake();
-        Command animationManagerCommand = new LoadManagerCommand( this, new List<GameObject> { animationManager } );
-        commands.Enqueue( animationManagerCommand );
+        Command animationManagerCommand = new LoadManagerCommand( this, new List<GameObject> { AnimationManager } );
         Command splashAnimation = new TransitionAnimationCommand( this, AnimationType.SplashScene, false );
-        commands.Enqueue( splashAnimation );
         Command transitionAnimation = new TransitionAnimationCommand( this, AnimationType.Transition, true );
-        commands.Enqueue( transitionAnimation );
-        Command managersCommand = new LoadManagerCommand( this, ManagersInGame );
-        commands.Enqueue( managersCommand );
-        Command loadSceneCommand = new LoadSceneCOmmand( this, ScenesType.MainScene );
-        commands.Enqueue( loadSceneCommand );
+        Command managersCommand = new LoadManagerCommand( this, _managersInGame );
+        Command loadSceneCommand = new LoadSceneCommand( this, ScenesType.MainScene );
         Command loadMainViewCommand = new LoadViewCommand( this, ViewType.HomeView );
-        commands.Enqueue( loadMainViewCommand );
         Command transitionAnimationClose = new TransitionAnimationCommand( this, AnimationType.Transition, false );
-        commands.Enqueue( transitionAnimationClose );
+
+        _commands.Enqueue(animationManagerCommand);
+        _commands.Enqueue(splashAnimation);
+        _commands.Enqueue(transitionAnimation);
+        _commands.Enqueue(managersCommand);
+        _commands.Enqueue(loadSceneCommand);
+        _commands.Enqueue(loadMainViewCommand);
+        _commands.Enqueue( transitionAnimationClose );
+
         StartLoadGame();
     }
 
@@ -35,11 +37,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         StartCoroutine( InitAllManagers() );
     }
 
-    IEnumerator InitAllManagers()
+    private IEnumerator InitAllManagers()
     {
-        while( commands.Count > 0 )
+        while( _commands.Count > 0 )
         {
-            Command commandToExecute = commands.Dequeue();
+            Command commandToExecute = _commands.Dequeue();
             commandToExecute.Execute();
             yield return new WaitUntil( () => commandToExecute.IsFinished );
         }

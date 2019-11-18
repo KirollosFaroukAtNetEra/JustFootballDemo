@@ -212,7 +212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625309541}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 765.60785, y: 247.66759, z: -443.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -230,12 +230,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91003760c2ddcb04e83e91897deb2f59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ManagersInGame:
+  _managersInGame:
   - {fileID: 6575814964818098591, guid: 6cf48c1ea26f1f14a825a87d01b190fe, type: 3}
   - {fileID: 6024015738730056186, guid: 67abb20bf52706c4b9c7765d22825421, type: 3}
   - {fileID: 5210181391130328998, guid: ccd80887615d3eb44b42ab101b31ff9d, type: 3}
   - {fileID: 341001663207174413, guid: 82be44e6b87fb9d448b1baa8ebffbb1b, type: 3}
-  animationManager: {fileID: 1774791693726123084, guid: 2a41027d5c36e9f4982a8bc6266e9fdf,
+  AnimationManager: {fileID: 1774791693726123084, guid: 2a41027d5c36e9f4982a8bc6266e9fdf,
     type: 3}
 --- !u!1 &2115819410
 GameObject:

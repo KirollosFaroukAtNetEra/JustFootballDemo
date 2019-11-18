@@ -11,12 +11,12 @@ public class ClubsView : UIView<ClubsModel, ClubsController>
 
     private void OnEnable()
     {
-        Events.instance.AddListener<ClubDataUpdated>( OnClubDataUpdated );
+        Events.Instance.AddListener<ClubDataUpdated>( OnClubDataUpdated );
     }
 
     private void OnDisable()
     {
-        Events.instance.RemoveListener<ClubDataUpdated>( OnClubDataUpdated );
+        Events.Instance.RemoveListener<ClubDataUpdated>( OnClubDataUpdated );
     }
 
     private void OnClubDataUpdated( ClubDataUpdated e )

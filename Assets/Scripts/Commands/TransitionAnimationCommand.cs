@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TransitionAnimationCommand : Command
 {
-    MonoBehaviour _monoBehavourToRunCoroutine;
-    bool _open;
-    AnimationType _animationType;
+    private MonoBehaviour _monoBehaviourToRunCoroutine;
+    private bool _open;
+    private AnimationType _animationType;
 
-    public TransitionAnimationCommand( MonoBehaviour MonoBehaviourClass, AnimationType animationType, bool open )
+    public TransitionAnimationCommand( MonoBehaviour monoBehaviourClass, AnimationType animationType, bool open )
     {
-        _monoBehavourToRunCoroutine = MonoBehaviourClass;
+        _monoBehaviourToRunCoroutine = monoBehaviourClass;
         _open = open;
         _animationType = animationType;
     }
@@ -20,16 +20,16 @@ public class TransitionAnimationCommand : Command
         IsFinished = false;
         _open = open;
         _animationType = animationType;
-        _monoBehavourToRunCoroutine.StopCoroutine( startAnimation() );
+        _monoBehaviourToRunCoroutine.StopCoroutine( startAnimation() );
     }
 
-    public override void Execute( Action OnComplete )
+    public override void Execute( Action onComplete )
     {
         IsFinished = false;
-        _monoBehavourToRunCoroutine.StartCoroutine( startAnimation() );
+        _monoBehaviourToRunCoroutine.StartCoroutine( startAnimation() );
     }
 
-    IEnumerator startAnimation()
+    private IEnumerator startAnimation()
     {
         if( _animationType == AnimationType.SplashScene )
         {

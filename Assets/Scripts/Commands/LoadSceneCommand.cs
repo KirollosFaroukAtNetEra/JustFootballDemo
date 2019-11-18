@@ -3,27 +3,27 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneCOmmand : Command
+public class LoadSceneCommand : Command
 {
-    MonoBehaviour _monoBehavourToRunCoroutine;
-    AsyncOperation loadSceneOperation;
-    ScenesType _scenesType;
+    private MonoBehaviour _monoBehaviourToRunCoroutine;
+    private AsyncOperation _loadSceneOperation;
+    private ScenesType _scenesType;
 
-    public LoadSceneCOmmand( MonoBehaviour MonoBehaviourClass, ScenesType scenesType )
+    public LoadSceneCommand( MonoBehaviour monoBehaviourClass, ScenesType scenesType )
     {
-        _monoBehavourToRunCoroutine = MonoBehaviourClass;
+        _monoBehaviourToRunCoroutine = monoBehaviourClass;
         _scenesType = scenesType;
     }
 
-    public override void Execute( Action OnComplete )
+    public override void Execute( Action onComplete )
     {
-        _monoBehavourToRunCoroutine.StartCoroutine( LoadScene() );
+        _monoBehaviourToRunCoroutine.StartCoroutine( LoadScene() );
     }
 
-    IEnumerator LoadScene()
+    private IEnumerator LoadScene()
     {
-        loadSceneOperation = SceneManager.LoadSceneAsync( _scenesType.ToString() );
-        yield return new WaitUntil( () => loadSceneOperation.isDone );
+        _loadSceneOperation = SceneManager.LoadSceneAsync( _scenesType.ToString() );
+        yield return new WaitUntil( () => _loadSceneOperation.isDone );
         if( _scenesType == ScenesType.MainScene )
         {
             AnimationManager.Instance.StopSplashAnimation();

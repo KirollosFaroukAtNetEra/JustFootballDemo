@@ -13,7 +13,7 @@
         RegisterDependency();
         Controller.Setup(Model, dataObject);
         ShowView();
-        isViewLoaded = true;
+        IsViewLoaded = true;
     }
 
     public override void RegisterDependency()

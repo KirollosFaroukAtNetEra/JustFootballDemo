@@ -19,7 +19,7 @@
         ApiManager.Instance.PostUserNameRequest( new UserName( newUserName ),
             () =>
             {
-                Events.instance.Raise(new ProfileNameUpdated(newUserName) );
+                Events.Instance.Raise(new ProfileNameUpdated(newUserName) );
             } );
     }
 }
