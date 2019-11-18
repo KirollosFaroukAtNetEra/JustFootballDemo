@@ -46,14 +46,7 @@ public class DataManager : BaseManager<DataManager>
                 new Rect(0, 0, texture2D.width, texture2D.height),
                 new Vector2(0.5f, 0.5f));
 
-            if (SimpleSpriteCache.ContainsKey(spriteUrl))
-            {
-                SimpleSpriteCache[spriteUrl] = spriteToDownload;
-            }
-            else
-            {
-                SimpleSpriteCache.Add(spriteUrl, spriteToDownload);
-            }
+            SimpleSpriteCache[spriteUrl] = spriteToDownload;
         }
 
         callback.Invoke(spriteToDownload);
