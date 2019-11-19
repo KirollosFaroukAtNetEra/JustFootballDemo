@@ -5,28 +5,29 @@ public class HomeModel : UIModel
 
     public HomeModel()
     {
-        Events.Instance.AddListener<ProfileNameUpdated>(OnProfileNameUpdated);
+        Events.Instance.AddListener<ProfileNameUpdated>( OnProfileNameUpdated );
     }
 
-    private void OnProfileNameUpdated(ProfileNameUpdated e)
+    private void OnProfileNameUpdated( ProfileNameUpdated e )
     {
         playerData.username = e.ProfileName;
-        NotifyOnPropertyChanged(DataLoadedObserverName);
+        NotifyOnPropertyChanged( DataLoadedObserverName );
     }
 
     public void RequestProfileData()
     {
-        ApiManager.Instance.GetUserRequest(null, OnGetUserData);
+        ApiManager.Instance.GetUserRequest( null, OnGetUserData );
     }
-    private void OnGetUserData(UserData userData)
+
+    private void OnGetUserData( UserData userData )
     {
         DataManager.Instance.MyData = userData;
         playerData = userData;
-        NotifyOnPropertyChanged(DataLoadedObserverName);
+        NotifyOnPropertyChanged( DataLoadedObserverName );
     }
 
     ~HomeModel()
     {
-        Events.Instance.RemoveListener<ProfileNameUpdated>(OnProfileNameUpdated);
+        Events.Instance.RemoveListener<ProfileNameUpdated>( OnProfileNameUpdated );
     }
 }

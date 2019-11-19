@@ -19,7 +19,7 @@ public class AuthenticationRequest : RequestBase
 
     public override UnityWebRequest GetRequest()
     {
-        var rawBytes = Encoding.UTF8.GetBytes(_authToken.ToJson());
+        var rawBytes = Encoding.UTF8.GetBytes( _authToken.ToJson() );
 
         var request = new UnityWebRequest( RequestUrl, "POST" )
         {
@@ -27,12 +27,12 @@ public class AuthenticationRequest : RequestBase
             downloadHandler = new DownloadHandlerBuffer()
         };
 
-        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader( "Content-Type", "application/json" );
 
         return request;
     }
 
-    public override void HandleResponse(UnityWebRequest response)
+    public override void HandleResponse( UnityWebRequest response )
     {
         base.HandleResponse( response );
         SuccessCallBack?.Invoke( response.responseCode == 200L, response.downloadHandler.text );

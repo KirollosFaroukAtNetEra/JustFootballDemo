@@ -1,37 +1,44 @@
 ﻿using System;
 using UnityEngine;
-[System.Serializable]
+
+[Serializable]
 public class Animate
 {
     public AnimationType AnimationType;
     public ScriptableObject animationSettings;
-
 }
+
 public class AnimationHandler
 {
+    private AnimationBehaviour animationBehaviour;
+
     public AnimationType AnimationType;
-    AnimationBehaviour animationBehaviour;
-    public GameObject RefrenceObject;
-    public ScriptableObject animationSettings;
+    public GameObject ReferenceObject;
+    public ScriptableObject AnimationSettings;
     public Vector3 OriginalPosition;
-    public bool resetToOriginal;
-    public Action onComplete;
+    public bool ResetToOriginal;
+    public Action OnComplete;
+
     public void Start()
     {
-        OriginalPosition = RefrenceObject.transform.position;
-        animationBehaviour = RefrenceObject.AddComponent(AnimationFactory.MakeAnimation(AnimationType)) as AnimationBehaviour;
-        if (animationSettings != null) animationBehaviour.AnimationSettings = animationSettings;
+        OriginalPosition = ReferenceObject.transform.position;
+        animationBehaviour =
+            ReferenceObject.AddComponent( AnimationFactory.MakeAnimation( AnimationType ) ) as AnimationBehaviour;
+
+        if( AnimationSettings != null )
+            animationBehaviour.AnimationSettings = AnimationSettings;
+
         animationBehaviour.SetupSettings();
-        animationBehaviour.onComplete = onComplete;
+        animationBehaviour.OnComplete = OnComplete;
         animationBehaviour.StartAnimate();
     }
 
     public void Stop()
     {
-        RefrenceObject.GetComponent<AnimationBehaviour>().StopAnimate();
-        if( resetToOriginal )
+        ReferenceObject.GetComponent<AnimationBehaviour>().StopAnimate();
+        if( ResetToOriginal )
         {
-            RefrenceObject.transform.position = OriginalPosition;
+            ReferenceObject.transform.position = OriginalPosition;
         }
     }
 }

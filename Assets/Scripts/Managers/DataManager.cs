@@ -24,9 +24,7 @@ public class DataManager : BaseManager<DataManager>
 
     private IEnumerator GetSprite(string spriteUrl, Action<Sprite> callback)
     {
-        Sprite spriteToDownload;
-
-        if (!SimpleSpriteCache.TryGetValue(spriteUrl, out spriteToDownload))
+        if (!SimpleSpriteCache.TryGetValue(spriteUrl, out var spriteToDownload))
         {
             UnityWebRequest req = UnityWebRequestTexture.GetTexture(spriteUrl);
 

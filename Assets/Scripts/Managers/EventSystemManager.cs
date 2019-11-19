@@ -28,8 +28,7 @@ public class Events
         EventDelegate internalDelegate = ( e ) => del( (T) e );
         _delegateLookup[ del ] = internalDelegate;
 
-        EventDelegate tempDel;
-        if( _delegates.TryGetValue( typeof( T ), out tempDel ) )
+        if( _delegates.TryGetValue( typeof( T ), out var tempDel ) )
         {
             _delegates[ typeof( T ) ] = tempDel += internalDelegate;
         }
@@ -41,11 +40,9 @@ public class Events
 
     public void RemoveListener<T>( EventDelegate<T> del ) where T : GameEvent
     {
-        EventDelegate internalDelegate;
-        if( _delegateLookup.TryGetValue( del, out internalDelegate ) )
+        if( _delegateLookup.TryGetValue( del, out var internalDelegate ) )
         {
-            EventDelegate tempDel;
-            if( _delegates.TryGetValue( typeof( T ), out tempDel ) )
+            if( _delegates.TryGetValue( typeof( T ), out var tempDel ) )
             {
                 tempDel -= internalDelegate;
                 if( tempDel == null )
@@ -64,8 +61,7 @@ public class Events
 
     public void Raise( GameEvent e )
     {
-        EventDelegate del;
-        if( _delegates.TryGetValue( e.GetType(), out del ) )
+        if( _delegates.TryGetValue( e.GetType(), out var del ) )
         {
             del.Invoke( e );
         }

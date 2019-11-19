@@ -14,7 +14,6 @@ public class LoadManagerCommand : Command
         _listOfManagers = listOfManagers;
     }
 
-
     public override void Execute( Action onComplete )
     {
         _monoBehaviourToRunCoroutine.StartCoroutine( InitAllManagers() );

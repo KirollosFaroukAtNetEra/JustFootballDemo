@@ -7,7 +7,7 @@ public class ClubsView : UIView<ClubsModel, ClubsController>
     public RectTransform ClubsScrollContent;
     public GameObject ClubPrefab;
     public List<ClubItem> ClubsList;
-    public ClubsScroll clubsScroll;
+    public ClubsScroll ScrollRect;
 
     private void OnEnable()
     {
@@ -21,24 +21,24 @@ public class ClubsView : UIView<ClubsModel, ClubsController>
 
     private void OnClubDataUpdated( ClubDataUpdated e )
     {
-        for( int i = 0; i < clubsScroll.ActiveElements.Count; i++ )
+        for( int i = 0; i < ScrollRect.ActiveElements.Count; i++ )
         {
-            clubsScroll.ActiveElements[ i ].UpdateData();
+            ScrollRect.ActiveElements[ i ].UpdateData();
         }
     }
 
     public override void DataLoaded()
     {
         if( Model.ClubsList.Length > 0 &&
-            clubsScroll != null )
+            ScrollRect != null )
         {
-            clubsScroll.Initialize( Model.ClubsList.ToList() );
+            ScrollRect.Initialize( Model.ClubsList.ToList() );
             LoadingAnimation.SetActive( false );
         }
 
-        for( int i = 0; i < clubsScroll.ActiveElements.Count; i++ )
+        for( int i = 0; i < ScrollRect.ActiveElements.Count; i++ )
         {
-            HandleClubItemData( clubsScroll.ActiveElements[ i ] );
+            HandleClubItemData( ScrollRect.ActiveElements[ i ] );
         }
 
     }

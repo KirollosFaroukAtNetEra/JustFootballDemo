@@ -7,15 +7,17 @@ public class HomeView : UIView<HomeModel, HomeController>
 
     public override void DataLoaded()
     {
-        if (Model.playerData != null && Model.playerData.pictureUrl != "")
+        if( Model.playerData != null &&
+            Model.playerData.pictureUrl != "" )
         {
-            DataManager.Instance.GetSpriteByUrl(Model.playerData.pictureUrl,
-                (image) => { playerImage.sprite = image; });
+            DataManager.Instance.GetSpriteByUrl( Model.playerData.pictureUrl,
+                ( image ) => { playerImage.sprite = image; } );
             playerName.text = Model.playerData.username;
         }
-        if (ApiManager.Instance.IsConnected)
+
+        if( ApiManager.Instance.IsConnected )
         {
-            LoadingAnimation.SetActive(false);
+            LoadingAnimation.SetActive( false );
         }
     }
 
@@ -23,13 +25,14 @@ public class HomeView : UIView<HomeModel, HomeController>
     {
         Controller.OpenClubView();
     }
+
     public void OnCardsClick()
     {
         Controller.OpenCardsView();
     }
+
     public void OnProfileClick()
     {
         Controller.OpenProfileView();
     }
-
 }

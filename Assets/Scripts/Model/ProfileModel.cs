@@ -7,19 +7,20 @@ public class ProfileModel : UIModel
         set
         {
             _playerData = value;
-            NotifyOnPropertyChanged(DataLoadedObserverName);
+            NotifyOnPropertyChanged( DataLoadedObserverName );
         }
         get => _playerData;
     }
 
     public bool IsMyProfile;
 
-    public void RequestProfileData(string userId="")
+    public void RequestProfileData( string userId = "" )
     {
         IsMyProfile = userId == string.Empty;
         ApiManager.Instance.GetUserRequest( userId, OnGetUserData );
     }
-    private void OnGetUserData(UserData userData)
+
+    private void OnGetUserData( UserData userData )
     {
         PlayerData = userData;
     }

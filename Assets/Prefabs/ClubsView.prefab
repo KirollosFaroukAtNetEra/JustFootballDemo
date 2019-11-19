@@ -516,7 +516,7 @@ MonoBehaviour:
   ClubPrefab: {fileID: 6327236165126194737, guid: 31f16d40a21ada146b24dede6ffbaf77,
     type: 3}
   ClubsList: []
-  clubsScroll: {fileID: 7914370925445666969}
+  ScrollRect: {fileID: 7914370925445666969}
 --- !u!1 &3646986430141061574
 GameObject:
   m_ObjectHideFlags: 0

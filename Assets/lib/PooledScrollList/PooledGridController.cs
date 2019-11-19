@@ -8,7 +8,7 @@ namespace Assets.Scripts.PooledScrollList
     {
         private readonly List<LayoutElement> _activeSpaceElements = new List<LayoutElement>();
 
-        private Pool<LayoutElement> _spaceElenemtsPool;
+        private Pool<LayoutElement> _spaceElementsPool;
         private int _constraintCount;
 
         public int SpaceElementsPoolCapacity;
@@ -17,7 +17,7 @@ namespace Assets.Scripts.PooledScrollList
         {
             base.Awake();
 
-            _spaceElenemtsPool = new Pool<LayoutElement>(CreateSpaceElement(ScrollRect, ElementSize), transform, SpaceElementsPoolCapacity);
+            _spaceElementsPool = new Pool<LayoutElement>(CreateSpaceElement(ScrollRect, ElementSize), transform, SpaceElementsPoolCapacity);
 
             var gridLayoutGroup = ScrollRect.content.GetComponent<GridLayoutGroup>();
             if (gridLayoutGroup != null)
@@ -74,7 +74,7 @@ namespace Assets.Scripts.PooledScrollList
 
             while (_activeSpaceElements.Count < requiredSpaceElements)
             {
-                var spaceElement = _spaceElenemtsPool.GetNext();
+                var spaceElement = _spaceElementsPool.GetNext();
                 spaceElement.transform.SetParent(ScrollRect.content.transform, false);
                 spaceElement.transform.SetSiblingIndex(0);
                 _activeSpaceElements.Add(spaceElement);
@@ -82,7 +82,7 @@ namespace Assets.Scripts.PooledScrollList
 
             while (_activeSpaceElements.Count > requiredSpaceElements)
             {
-                _spaceElenemtsPool.Return(_activeSpaceElements[_activeSpaceElements.Count - 1]);
+                _spaceElementsPool.Return(_activeSpaceElements[_activeSpaceElements.Count - 1]);
                 _activeSpaceElements.RemoveAt(_activeSpaceElements.Count - 1);
             }
         }
@@ -128,10 +128,10 @@ namespace Assets.Scripts.PooledScrollList
 
             for (var i = 0; i < _activeSpaceElements.Count; i++)
             {
-                _spaceElenemtsPool.Return(_activeSpaceElements[i]);
+                _spaceElementsPool.Return(_activeSpaceElements[i]);
             }
 
-            _spaceElenemtsPool.Dispose();
+            _spaceElementsPool.Dispose();
             _activeSpaceElements.Clear();
         }
     }

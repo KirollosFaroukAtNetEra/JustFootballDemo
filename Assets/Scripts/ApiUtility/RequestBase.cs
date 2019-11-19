@@ -6,7 +6,7 @@ public enum HTTPReqType
     GET,
     POST
 }
- 
+
 public abstract class RequestBase
 {
     protected const string ApiUrl = "https://demo.dev.justfootball.io/api";
@@ -29,11 +29,12 @@ public abstract class RequestBase
     public virtual void HandleResponse( UnityWebRequest response )
     {
         var responseText = response.downloadHandler.text;
-        if ( response.isHttpError ||
-            response.isNetworkError || (responseText.Contains("success") 
-                && responseText.CreateFromJson<ErrorJson>().success.ToLower() == "false" ))
+        if( response.isHttpError ||
+            response.isNetworkError ||
+            ( responseText.Contains( "success" ) &&
+                responseText.CreateFromJson<ErrorJson>().success.ToLower() == "false" ) )
         {
-            ViewsManager.Instance.ShowAlert( "Network Error" );
+            ViewsManager.Instance.ShowAlert( "Network Error, Retrying now..." );
             ApiManager.Instance.Requests.Enqueue( this );
             FailCallBack?.Invoke();
         }

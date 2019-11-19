@@ -902,8 +902,8 @@ MonoBehaviour:
   ProfileImage: {fileID: 4341046623300855133}
   ClubIcon: {fileID: 4341046622629677003}
   ProfileName: {fileID: 4341046623556305590}
-  ClubeName: {fileID: 4341046621905382536}
-  ClubeLeague: {fileID: 4341046623096137135}
+  ClubName: {fileID: 4341046621905382536}
+  ClubLeague: {fileID: 4341046623096137135}
   ChangeNameButton: {fileID: 4341046623084031120}
   SaveButton: {fileID: 2060663751103110614}
   UserNameInputField: {fileID: 4341046621831891710}
@@ -1502,7 +1502,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4341046623035065654}
-        m_MethodName: UserNameSubmited
+        m_MethodName: UserNameSubmitted
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

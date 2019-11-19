@@ -3,28 +3,30 @@
 public class MoveAnimation : AnimationBehaviour
 {
     private float _timeStartedLerping;
-    private MoveAnimationSettings moveAnimationSettings;
+    private MoveAnimationSettings _moveAnimationSettings;
 
     public override void SetupSettings()
     {
         base.SetupSettings();
-        moveAnimationSettings = AnimationSettings as MoveAnimationSettings;
+        _moveAnimationSettings = AnimationSettings as MoveAnimationSettings;
         _timeStartedLerping = Time.time;
     }
-    
+
     private void FixedUpdate()
     {
-        if (AllowAnimate)
+        if( AllowAnimate )
         {
             float timeSinceStarted = Time.time - _timeStartedLerping;
-            float percentageComplete = timeSinceStarted / moveAnimationSettings.timeToReachTarget;
+            float percentageComplete = timeSinceStarted / _moveAnimationSettings.timeToReachTarget;
 
-            transform.localPosition = Vector3.Lerp(moveAnimationSettings.startPosition, moveAnimationSettings.target, percentageComplete);
+            transform.localPosition = Vector3.Lerp( _moveAnimationSettings.startPosition,
+                _moveAnimationSettings.target,
+                percentageComplete );
 
-            if (percentageComplete >= 1.0f)
+            if( percentageComplete >= 1.0f )
             {
                 AllowAnimate = false;
-                onComplete?.Invoke();
+                OnComplete?.Invoke();
             }
         }
     }

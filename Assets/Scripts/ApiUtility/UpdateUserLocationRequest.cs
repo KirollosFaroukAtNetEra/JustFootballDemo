@@ -16,9 +16,9 @@ public class UpdateUserLocationRequest : RequestBase
         return base.GetRequest();
     }
 
-    public override void HandleResponse(UnityWebRequest response)
+    public override void HandleResponse( UnityWebRequest response )
     {
-        base.HandleResponse(response);
+        base.HandleResponse( response );
         SuccessCallBack?.Invoke();
     }
 }

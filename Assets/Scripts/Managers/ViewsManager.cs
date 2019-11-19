@@ -57,6 +57,7 @@ public class ViewsManager : BaseManager<ViewsManager>
         var alertObject = Instantiate( AlertGameObject, transform );
         AnimationManager.Instance.AddAnimation( AnimationType.ScaleIn, alertObject );
         alertObject.GetComponent<AlertMessage>().SetAlertMessage( alertMessage );
+
         yield return new WaitForSeconds( 1.5f );
         Destroy( alertObject );
     }
@@ -77,15 +78,15 @@ public class ViewsManager : BaseManager<ViewsManager>
 
         UIViewBase topViewOnStack = GetViewOnTopOfStack();
 
-        if (topViewOnStack != null)
+        if( topViewOnStack != null )
         {
             topViewOnStack.HideView();
-            yield return new WaitUntil(() => topViewOnStack.IsDisabled);
+            yield return new WaitUntil( () => topViewOnStack.IsDisabled );
         }
 
         var viewObject = Instantiate( ViewsObjectsList.First( view => view.Type == viewType ).ViewObject );
         var viewToOpen = viewObject.GetComponent<UIViewBase>();
-        
+
         viewToOpen.SetupView( dataObject );
         _viewsStack.Add( viewToOpen );
         yield return new WaitUntil( () => viewToOpen.IsViewLoaded );
@@ -99,7 +100,7 @@ public class ViewsManager : BaseManager<ViewsManager>
     {
         if( _viewsStack.Count == 0 )
         {
-            return ;
+            return;
         }
 
         _viewsStack[ _viewsStack.Count - 1 ].HideView();
@@ -107,12 +108,12 @@ public class ViewsManager : BaseManager<ViewsManager>
 
     private UIViewBase GetViewOnTopOfStack()
     {
-        if (_viewsStack.Count == 0)
+        if( _viewsStack.Count == 0 )
         {
             return null;
         }
 
-        return _viewsStack[_viewsStack.Count - 1];
+        return _viewsStack[ _viewsStack.Count - 1 ];
     }
 
     public void CloseOnTopOfStack()
@@ -129,7 +130,7 @@ public class ViewsManager : BaseManager<ViewsManager>
     {
         _isWaitingForLoading = true;
 
-        if ( _viewsStack.Count == 1 )
+        if( _viewsStack.Count == 1 )
         {
             yield break;
         }

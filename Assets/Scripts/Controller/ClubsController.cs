@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class ClubsController : UIController<ClubsModel>
+﻿public class ClubsController : UIController<ClubsModel>
 {
     public override void Setup( ClubsModel model, object dataObject )
     {

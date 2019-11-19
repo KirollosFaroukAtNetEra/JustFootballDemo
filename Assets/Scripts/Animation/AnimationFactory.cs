@@ -8,10 +8,6 @@ public static class AnimationFactory
         {
             case AnimationType.Shake:
                 return typeof(Shake);
-            case AnimationType.FadeIn:
-                return typeof(FadeIn);
-            case AnimationType.FadeOut:
-                return typeof(FadeOut);
             case AnimationType.ScaleIn:
                 return typeof(ScaleIn);
             case AnimationType.ScaleOut:

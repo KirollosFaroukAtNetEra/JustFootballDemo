@@ -22,7 +22,7 @@ public class AnimationManager : BaseManager<AnimationManager>
 {
     private Dictionary<GameObject, List<AnimationHandler>> AnimationList =
         new Dictionary<GameObject, List<AnimationHandler>>();
-    public Animator transitionAnimator;
+    public Animator TransitionAnimator;
     public Animator SplashAnimationGO;
 
     public override void Initialize()
@@ -30,29 +30,38 @@ public class AnimationManager : BaseManager<AnimationManager>
         IsReady = true;
     }
 
-    public void AddAnimation( AnimationType animationType, GameObject refrenceGameObject, bool resetToOriginal = true,ScriptableObject animationSettings = null,Action onComplete = null)
+    public void AddAnimation( AnimationType animationType,
+        GameObject referenceGameObject,
+        bool resetToOriginal = true,
+        ScriptableObject animationSettings = null,
+        Action onComplete = null )
     {
-        if (animationType == AnimationType.None)
+        if( animationType == AnimationType.None )
         {
             onComplete?.Invoke();
             return;
         }
-        if( !AnimationList.ContainsKey( refrenceGameObject ) )
-            AnimationList.Add( refrenceGameObject, new List<AnimationHandler>() );
 
-        var existsAnimationHandler = AnimationList[ refrenceGameObject ].Find( x => x.AnimationType == animationType );
-        if (existsAnimationHandler != null)
+        if( !AnimationList.ContainsKey( referenceGameObject ) )
+            AnimationList.Add( referenceGameObject, new List<AnimationHandler>() );
+
+        var existsAnimationHandler = AnimationList[ referenceGameObject ].Find( x => x.AnimationType == animationType );
+        if( existsAnimationHandler != null )
         {
-            StopAnimation(existsAnimationHandler.RefrenceObject, existsAnimationHandler.AnimationType);
+            StopAnimation( existsAnimationHandler.ReferenceObject, existsAnimationHandler.AnimationType );
             return;
         }
+
         AnimationHandler animationHandler = new AnimationHandler();
         animationHandler.AnimationType = animationType;
-        animationHandler.RefrenceObject = refrenceGameObject;
-        animationHandler.resetToOriginal = resetToOriginal;
-        animationHandler.onComplete = onComplete;
-        AnimationList[ refrenceGameObject ].Add( animationHandler );
-        if (animationSettings != null) animationHandler.animationSettings = animationSettings;
+        animationHandler.ReferenceObject = referenceGameObject;
+        animationHandler.ResetToOriginal = resetToOriginal;
+        animationHandler.OnComplete = onComplete;
+        AnimationList[ referenceGameObject ].Add( animationHandler );
+
+        if( animationSettings != null )
+            animationHandler.AnimationSettings = animationSettings;
+
         animationHandler.Start();
     }
 
@@ -60,17 +69,20 @@ public class AnimationManager : BaseManager<AnimationManager>
     {
         if( !AnimationList.ContainsKey( refrenceGameObject ) )
             return;
+
         var animationHandlerIndex =
             AnimationList[ refrenceGameObject ].FindIndex( x => x.AnimationType == animationType );
+
         if( animationHandlerIndex == -1 )
             return;
+
         AnimationList[ refrenceGameObject ][ animationHandlerIndex ]?.Stop();
         AnimationList[ refrenceGameObject ].RemoveAt( animationHandlerIndex );
     }
 
     public void TransitionAnimation( bool start )
     {
-        transitionAnimator.SetBool( "IsOpen", start );
+        TransitionAnimator.SetBool( "IsOpen", start );
     }
 
     public void SplashAnimation()

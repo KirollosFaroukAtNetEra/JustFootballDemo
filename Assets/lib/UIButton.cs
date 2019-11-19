@@ -1,18 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler,IPointerClickHandler
+public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler, IPointerClickHandler
 {
-
     [SerializeField]
-    [Tooltip("How long must pointer be down on this object to trigger a long press")]
-    private float holdTime = 5f;
-    private float longPressDelay = 0.5f;
+    [Tooltip( "How long must pointer be down on this object to trigger a long press" )]
+    private float _holdTime = 5f;
+    private float _longPressDelay = 0.5f;
+    private bool _held = false;
 
-    private bool held = false;
     public bool AllowLongPress = false;
     public UnityEvent onClick = new UnityEvent();
     public UnityEvent onLongPress = new UnityEvent();
@@ -20,40 +17,48 @@ public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public UnityEvent onPointerDown = new UnityEvent();
     public UnityEvent onLongPressStart = new UnityEvent();
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerDown( PointerEventData eventData )
     {
         onPointerDown.Invoke();
-        if (!AllowLongPress)
+
+        if( !AllowLongPress )
             return;
-        held = false;
-        Invoke("OnLongPress", holdTime + longPressDelay);
-        Invoke("OnLongPressStarted", longPressDelay);
+
+        _held = false;
+        Invoke( nameof( OnLongPress ), _holdTime + _longPressDelay );
+        Invoke( nameof( OnLongPressStarted ), _longPressDelay );
     }
-    public void OnPointerUp(PointerEventData eventData)
+
+    public void OnPointerUp( PointerEventData eventData )
     {
-        if (!AllowLongPress)
+        if( !AllowLongPress )
             return;
-        if (held)
+
+        if( _held )
             onLongPressCanceled.Invoke();
-        CancelInvoke("OnLongPress");
-        CancelInvoke("OnLongPressStarted");
+
+        CancelInvoke( nameof( OnLongPress ) );
+        CancelInvoke( nameof( OnLongPressStarted ) );
     }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-    }
+
+    public void OnPointerExit( PointerEventData eventData )
+    { }
+
     private void OnLongPress()
     {
-        held = true;
+        _held = true;
         onLongPress.Invoke();
     }
+
     private void OnLongPressStarted()
     {
-        held = true;
+        _held = true;
         onLongPressStart.Invoke();
     }
-    public void OnPointerClick(PointerEventData eventData)
+
+    public void OnPointerClick( PointerEventData eventData )
     {
-        if (!held || !AllowLongPress)
+        if( !_held || !AllowLongPress )
             onClick.Invoke();
     }
 }

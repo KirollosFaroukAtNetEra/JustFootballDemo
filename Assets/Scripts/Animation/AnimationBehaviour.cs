@@ -6,7 +6,7 @@ public class AnimationBehaviour : MonoBehaviour
     protected bool AllowAnimate;
 
     public ScriptableObject AnimationSettings;
-    public Action onComplete;
+    public Action OnComplete;
 
     public virtual void StartAnimate()
     {

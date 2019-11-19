@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ProfileView : UIView<ProfileModel, ProfileController>
@@ -8,13 +6,13 @@ public class ProfileView : UIView<ProfileModel, ProfileController>
     public Image ProfileImage;
     public Image ClubIcon;
     public Text ProfileName;
-    public Text ClubeName;
-    public Text ClubeLeague;
+    public Text ClubName;
+    public Text ClubLeague;
     public Button ChangeNameButton;
     public Button SaveButton;
     public InputField UserNameInputField;
     public Image SettingIcon;
-    
+
     private bool _isMyProfile;
     public bool IsMyProfile
     {
@@ -33,7 +31,6 @@ public class ProfileView : UIView<ProfileModel, ProfileController>
         set
         {
             _isEditMode = value;
-
             ToggleEditMode();
         }
 
@@ -42,38 +39,58 @@ public class ProfileView : UIView<ProfileModel, ProfileController>
 
     private void ToggleEditMode()
     {
-        UserNameInputField.gameObject.SetActive(_isEditMode);
-        ChangeNameButton.gameObject.SetActive(!_isEditMode);
+        UserNameInputField.gameObject.SetActive( _isEditMode );
+        ChangeNameButton.gameObject.SetActive( !_isEditMode );
         SettingIcon.gameObject.SetActive( !IsEditMode );
         SaveButton.gameObject.SetActive( _isEditMode );
-        if (IsEditMode)
+
+        if( IsEditMode )
         {
-            TouchScreenKeyboard.Open(ProfileName.text);
+            TouchScreenKeyboard.Open( ProfileName.text );
         }
     }
 
     private void UpdateProfileSettings()
     {
         ChangeNameButton.interactable = _isMyProfile;
-        SettingIcon.gameObject.SetActive(IsMyProfile);
+        SettingIcon.gameObject.SetActive( IsMyProfile );
     }
 
     public override void DataLoaded()
     {
-        if (Model.PlayerData == null)
+        if( Model.PlayerData == null )
         {
             return;
         }
 
         IsMyProfile = Model.IsMyProfile;
         ProfileName.text = Model.PlayerData.username;
-        ClubeName.text = Model.PlayerData.club;
-        ClubeLeague.text = "";
-        if (Model.PlayerData.pictureUrl == "" || Model.PlayerData.clubPictureUrl == "")
-        { return; }
-        DataManager.Instance.GetSpriteByUrl(Model.PlayerData.pictureUrl, (image) => { if (ProfileImage == null) return; ProfileImage.sprite = image; });
-        DataManager.Instance.GetSpriteByUrl(Model.PlayerData.clubPictureUrl, (image) => { if (ClubIcon == null) return;  ClubIcon.sprite = image; });
-        LoadingAnimation.SetActive(false);
+        ClubName.text = Model.PlayerData.club;
+        ClubLeague.text = "";
+
+        if( Model.PlayerData.pictureUrl == "" ||
+            Model.PlayerData.clubPictureUrl == "" )
+        {
+            return;
+        }
+
+        DataManager.Instance.GetSpriteByUrl( Model.PlayerData.pictureUrl,
+            ( image ) =>
+            {
+                if( ProfileImage == null )
+                    return;
+                ProfileImage.sprite = image;
+            } );
+
+        DataManager.Instance.GetSpriteByUrl( Model.PlayerData.clubPictureUrl,
+            ( image ) =>
+            {
+                if( ClubIcon == null )
+                    return;
+                ClubIcon.sprite = image;
+            } );
+
+        LoadingAnimation.SetActive( false );
     }
 
     public void ChooseNameClicked()
@@ -81,7 +98,7 @@ public class ProfileView : UIView<ProfileModel, ProfileController>
         IsEditMode = !IsEditMode;
     }
 
-    public void UserNameSubmited()
+    public void UserNameSubmitted()
     {
         IsEditMode = !IsEditMode;
         ProfileName.text = UserNameInputField.text;

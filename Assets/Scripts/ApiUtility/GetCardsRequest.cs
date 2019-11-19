@@ -7,9 +7,9 @@ public class GetCardsRequest : RequestBase
 
     public Action<CardData[]> SuccessCallBack;
 
-    public override void HandleResponse(UnityWebRequest response)
+    public override void HandleResponse( UnityWebRequest response )
     {
-        base.HandleResponse(response);
+        base.HandleResponse( response );
         SuccessCallBack?.Invoke( response.downloadHandler.text.CreateArrayFromJson<CardData>() );
     }
 }
