@@ -6,14 +6,14 @@ public class UIViewBase : MonoBehaviour
     public GameObject LoadingAnimation;
     public bool IsViewLoaded;
     public bool IsDataLoadedFromServer;
-    public AnimationType AnimationOnOpen;
-    public AnimationType AnimationOnClose;
-    public ScriptableObject OpenAnimationSettings;
 
+    public Animate OpenViewAnimation;
+    public Animate CloseViewAnimation;
     public virtual void Awake()
     {
         ViewParent.SetActive( false );
-        LoadingAnimation.SetActive( true );
+
+
     }
 
     public virtual void RegisterDependency()
@@ -24,12 +24,13 @@ public class UIViewBase : MonoBehaviour
 
     public virtual void ShowView()
     {
-        AnimationManager.Instance.AddAnimation( AnimationOnOpen, ViewParent, false, OpenAnimationSettings );
+        AnimationManager.Instance.AddAnimation(OpenViewAnimation.AnimationType, ViewParent, true, OpenViewAnimation.animationSettings);
         ViewParent.SetActive( true );
     }
 
     public virtual void HideView()
     {
+        AnimationManager.Instance.AddAnimation(OpenViewAnimation.AnimationType, ViewParent, true, OpenViewAnimation.animationSettings);
         gameObject.SetActive( false );
     }
 

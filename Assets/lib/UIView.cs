@@ -7,7 +7,7 @@
 
     public override void SetupView(object dataObject=null)
     {
-        base.SetupView();
+        base.SetupView(dataObject);
         Controller = new C();
         Model = Model ?? new M(); 
         RegisterDependency();

@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
+[System.Serializable]
+public class Animate
+{
+    public AnimationType AnimationType;
+    public ScriptableObject animationSettings;
 
+}
 public class AnimationHandler
 {
     public AnimationType AnimationType;
@@ -11,6 +17,7 @@ public class AnimationHandler
 
     public void Start()
     {
+        
         OriginalPosition = RefrenceObject.transform.position;
         animationBehaviour = RefrenceObject.AddComponent(AnimationFactory.MakeAnimation(AnimationType)) as AnimationBehaviour;
         if (animationSettings != null) animationBehaviour.AnimationSettings = animationSettings;

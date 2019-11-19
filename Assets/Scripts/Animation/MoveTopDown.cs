@@ -2,6 +2,7 @@
 
 public class MoveTopDown : AnimationBehaviour
 {
+
     float time;
     MoveAnimationSettings moveAnimationSettings;
     void Awake()
@@ -11,6 +12,6 @@ public class MoveTopDown : AnimationBehaviour
     void Update()
     {
         time += Time.deltaTime / moveAnimationSettings.timeToReachTarget;
-        transform.localPosition = Vector3.Lerp(moveAnimationSettings.startPosition, moveAnimationSettings.target, time);
+        transform.localPosition = Vector3.Lerp(moveAnimationSettings.startPosition, moveAnimationSettings.target, moveAnimationSettings.curve.Evaluate(time));
     }
 }

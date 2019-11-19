@@ -555,12 +555,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ViewParent: {fileID: 6108772631504968725}
   LoadingAnimation: {fileID: 4581138194877360862}
-  isViewLoaded: 0
-  isDataLoadedFromServer: 0
-  AnimationOnOpen: 7
-  AnimationOnClose: 11
-  OpenAnimationSettings: {fileID: 11400000, guid: c7c8c3d702c099943ac93454fac1ec8d,
-    type: 2}
+  IsViewLoaded: 0
+  IsDataLoadedFromServer: 0
+  OpenViewAnimation:
+    AnimationType: 7
+    animationSettings: {fileID: 11400000, guid: c7c8c3d702c099943ac93454fac1ec8d,
+      type: 2}
+  CloseViewAnimation:
+    AnimationType: 11
+    animationSettings: {fileID: 0}
   Model:
     DataLoadedObserverName: DataLoaded
     playerData:
@@ -1163,6 +1166,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LoadingInd
+      objectReference: {fileID: 0}
+    - target: {fileID: 4581138196130137477, guid: 18d5235fbb0f8af45842adf915ddf146,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4581138196130137478, guid: 18d5235fbb0f8af45842adf915ddf146,
         type: 3}

@@ -779,10 +779,13 @@ MonoBehaviour:
   LoadingAnimation: {fileID: 4581138195606016493}
   IsViewLoaded: 0
   IsDataLoadedFromServer: 0
-  AnimationOnOpen: 7
-  AnimationOnClose: 11
-  OpenAnimationSettings: {fileID: 11400000, guid: c7c8c3d702c099943ac93454fac1ec8d,
-    type: 2}
+  OpenViewAnimation:
+    AnimationType: 7
+    animationSettings: {fileID: 11400000, guid: c7c8c3d702c099943ac93454fac1ec8d,
+      type: 2}
+  CloseViewAnimation:
+    AnimationType: 11
+    animationSettings: {fileID: 0}
   CardsContent: {fileID: 4200301598548258916}
   CardItemPrefab: {fileID: 1062140437322405864, guid: 20eb8e275294b564a8f5452464d1aa20,
     type: 3}
@@ -1195,7 +1198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4581138195606016494
 RectTransform:
   m_ObjectHideFlags: 0
