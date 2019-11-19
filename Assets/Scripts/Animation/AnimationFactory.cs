@@ -17,7 +17,7 @@ public static class AnimationFactory
             case AnimationType.ScaleOut:
                 return typeof(ScaleOut);
             case AnimationType.MoveTopDown:
-                return typeof(MoveTopDown);
+                return typeof(MoveAnimation);
             default:
                 return null;
         }

@@ -54,7 +54,7 @@ public class ViewsManager : BaseManager<ViewsManager>
 
     private IEnumerator SetupAlert( string alertMessage )
     {
-        var alertObject = Instantiate( AlertGameObject, _viewsStack[ _viewsStack.Count - 1 ].transform );
+        var alertObject = Instantiate( AlertGameObject, transform );
         AnimationManager.Instance.AddAnimation( AnimationType.ScaleIn, alertObject );
         alertObject.GetComponent<AlertMessage>().SetAlertMessage( alertMessage );
         yield return new WaitForSeconds( 1.5f );
@@ -74,8 +74,15 @@ public class ViewsManager : BaseManager<ViewsManager>
     private IEnumerator LoadView( ViewType viewType, object dataObject = null, Action onComplete = null )
     {
         _isWaitingForLoading = true;
-        DisableOnTopOfStack();
-        
+
+        UIViewBase topViewOnStack = GetViewOnTopOfStack();
+
+        if (topViewOnStack != null)
+        {
+            topViewOnStack.HideView();
+            yield return new WaitUntil(() => topViewOnStack.IsDisabled);
+        }
+
         var viewObject = Instantiate( ViewsObjectsList.First( view => view.Type == viewType ).ViewObject );
         var viewToOpen = viewObject.GetComponent<UIViewBase>();
         
@@ -92,10 +99,20 @@ public class ViewsManager : BaseManager<ViewsManager>
     {
         if( _viewsStack.Count == 0 )
         {
-            return;
+            return ;
         }
 
         _viewsStack[ _viewsStack.Count - 1 ].HideView();
+    }
+
+    private UIViewBase GetViewOnTopOfStack()
+    {
+        if (_viewsStack.Count == 0)
+        {
+            return null;
+        }
+
+        return _viewsStack[_viewsStack.Count - 1];
     }
 
     public void CloseOnTopOfStack()
@@ -111,20 +128,24 @@ public class ViewsManager : BaseManager<ViewsManager>
     private IEnumerator CloseViewOnTopOfStack()
     {
         _isWaitingForLoading = true;
-        if( _viewsStack.Count == 1 )
+
+        if ( _viewsStack.Count == 1 )
         {
             yield break;
         }
 
         var viewToClose = _viewsStack[ _viewsStack.Count - 1 ];
         _viewsStack.Remove( viewToClose );
+
         Destroy( viewToClose.gameObject );
+
         EnableOnTopOfStack();
+
         _isWaitingForLoading = false;
     }
 
     private void EnableOnTopOfStack()
     {
-        _viewsStack[ _viewsStack.Count - 1 ].gameObject.SetActive( true );
+        _viewsStack[ _viewsStack.Count - 1 ].ShowView();
     }
 }

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public override void Awake()
     {
         base.Awake();
+
         Command animationManagerCommand = new LoadManagerCommand( this, new List<GameObject> { AnimationManager } );
         Command splashAnimation = new TransitionAnimationCommand( this, AnimationType.SplashScene, false );
         Command transitionAnimation = new TransitionAnimationCommand( this, AnimationType.Transition, true );

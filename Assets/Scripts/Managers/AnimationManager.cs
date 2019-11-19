@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum AnimationType
@@ -29,26 +30,30 @@ public class AnimationManager : BaseManager<AnimationManager>
         IsReady = true;
     }
 
-    public void AddAnimation( AnimationType animationType, GameObject refrenceGameObject, bool resetToOriginal = true,ScriptableObject animationSettings = null)
+    public void AddAnimation( AnimationType animationType, GameObject refrenceGameObject, bool resetToOriginal = true,ScriptableObject animationSettings = null,Action onComplete = null)
     {
         if (animationType == AnimationType.None)
         {
+            onComplete?.Invoke();
             return;
         }
         if( !AnimationList.ContainsKey( refrenceGameObject ) )
             AnimationList.Add( refrenceGameObject, new List<AnimationHandler>() );
 
         var existsAnimationHandler = AnimationList[ refrenceGameObject ].Find( x => x.AnimationType == animationType );
-        if( existsAnimationHandler != null )
+        if (existsAnimationHandler != null)
+        {
+            StopAnimation(existsAnimationHandler.RefrenceObject, existsAnimationHandler.AnimationType);
             return;
+        }
         AnimationHandler animationHandler = new AnimationHandler();
         animationHandler.AnimationType = animationType;
         animationHandler.RefrenceObject = refrenceGameObject;
         animationHandler.resetToOriginal = resetToOriginal;
+        animationHandler.onComplete = onComplete;
         AnimationList[ refrenceGameObject ].Add( animationHandler );
         if (animationSettings != null) animationHandler.animationSettings = animationSettings;
         animationHandler.Start();
-
     }
 
     public void StopAnimation( GameObject refrenceGameObject, AnimationType animationType )
@@ -59,7 +64,7 @@ public class AnimationManager : BaseManager<AnimationManager>
             AnimationList[ refrenceGameObject ].FindIndex( x => x.AnimationType == animationType );
         if( animationHandlerIndex == -1 )
             return;
-        AnimationList[ refrenceGameObject ][ animationHandlerIndex ].Stop();
+        AnimationList[ refrenceGameObject ][ animationHandlerIndex ]?.Stop();
         AnimationList[ refrenceGameObject ].RemoveAt( animationHandlerIndex );
     }
 

@@ -13,8 +13,8 @@ public class DataManager : BaseManager<DataManager>
     public override void Initialize()
     {
         base.Initialize();
-        IsReady = true;
         SimpleSpriteCache = new Dictionary<string, Sprite>();
+        IsReady = true;
     }
 
     public void GetSpriteByUrl(string spriteUrl, Action<Sprite> callback)

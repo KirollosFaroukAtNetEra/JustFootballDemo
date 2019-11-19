@@ -886,14 +886,16 @@ MonoBehaviour:
   ViewParent: {fileID: 4341046622606252128}
   LoadingAnimation: {fileID: 4581138195117858728}
   IsViewLoaded: 0
+  IsDisabled: 0
   IsDataLoadedFromServer: 0
   OpenViewAnimation:
     AnimationType: 7
     animationSettings: {fileID: 11400000, guid: c7c8c3d702c099943ac93454fac1ec8d,
       type: 2}
   CloseViewAnimation:
-    AnimationType: 11
-    animationSettings: {fileID: 0}
+    AnimationType: 7
+    animationSettings: {fileID: 11400000, guid: 70dfc0d238e56f84d830efc9e546b70b,
+      type: 2}
   Model:
     DataLoadedObserverName: DataLoaded
     IsMyProfile: 0
@@ -2037,15 +2039,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18d5235fbb0f8af45842adf915ddf146, type: 3}
---- !u!1 &4581138195117858728 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4581138196130137477, guid: 18d5235fbb0f8af45842adf915ddf146,
-    type: 3}
-  m_PrefabInstance: {fileID: 2109135405}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4581138195117858731 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4581138196130137478, guid: 18d5235fbb0f8af45842adf915ddf146,
+    type: 3}
+  m_PrefabInstance: {fileID: 2109135405}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4581138195117858728 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4581138196130137477, guid: 18d5235fbb0f8af45842adf915ddf146,
     type: 3}
   m_PrefabInstance: {fileID: 2109135405}
   m_PrefabAsset: {fileID: 0}

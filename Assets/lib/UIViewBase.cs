@@ -5,15 +5,15 @@ public class UIViewBase : MonoBehaviour
     public GameObject ViewParent;
     public GameObject LoadingAnimation;
     public bool IsViewLoaded;
+    public bool IsDisabled;
     public bool IsDataLoadedFromServer;
 
     public Animate OpenViewAnimation;
     public Animate CloseViewAnimation;
+
     public virtual void Awake()
     {
         ViewParent.SetActive( false );
-
-
     }
 
     public virtual void RegisterDependency()
@@ -24,18 +24,34 @@ public class UIViewBase : MonoBehaviour
 
     public virtual void ShowView()
     {
-        AnimationManager.Instance.AddAnimation(OpenViewAnimation.AnimationType, ViewParent, true, OpenViewAnimation.animationSettings);
+        ViewParent.transform.parent.gameObject.SetActive(true);
+
+        AnimationManager.Instance.AddAnimation(OpenViewAnimation.AnimationType, ViewParent, false, OpenViewAnimation.animationSettings,()=> {
+            AnimationManager.Instance.StopAnimation(ViewParent,OpenViewAnimation.AnimationType);
+            IsViewLoaded = true;
+            IsDisabled = false;
+        });
         ViewParent.SetActive( true );
     }
 
     public virtual void HideView()
     {
-        AnimationManager.Instance.AddAnimation(OpenViewAnimation.AnimationType, ViewParent, true, OpenViewAnimation.animationSettings);
-        gameObject.SetActive( false );
+        AnimationManager.Instance.AddAnimation(CloseViewAnimation.AnimationType, ViewParent, false, CloseViewAnimation.animationSettings,()=> {
+            AnimationManager.Instance.StopAnimation(ViewParent, CloseViewAnimation.AnimationType);
+            gameObject.SetActive(false);
+            IsViewLoaded = false;
+            IsDisabled = true;
+        });
     }
 
     public virtual void CloseView()
     {
-        ViewsManager.Instance.CloseOnTopOfStack();
+        AnimationManager.Instance.AddAnimation(CloseViewAnimation.AnimationType, ViewParent, false, CloseViewAnimation.animationSettings, () => {
+            AnimationManager.Instance.StopAnimation(ViewParent, CloseViewAnimation.AnimationType);
+            ViewsManager.Instance.CloseOnTopOfStack();
+            IsViewLoaded = false;
+            IsDisabled = true;
+        });
+
     }
 }
